@@ -1,0 +1,182 @@
+# Asset Universe — JustMarkets Demo (MT5 with .m suffix)
+# All symbols end in .m (micro/symbol naming convention)
+# Pip values are indicative — MT5 adapter overrides via symbol_info at runtime
+
+forex:
+  majors:
+    - symbol: EURUSD.m
+      mt5_symbol: EURUSDm
+      digits: 5
+      pip_value: 10.0
+      spread_avg: 0.8
+    - symbol: GBPUSD.m
+      mt5_symbol: GBPUSDm
+      digits: 5
+      pip_value: 10.0
+      spread_avg: 1.0
+    - symbol: USDJPY.m
+      mt5_symbol: USDJPYm
+      digits: 3
+      pip_value: 6.8
+      spread_avg: 0.9
+    - symbol: AUDUSD.m
+      mt5_symbol: AUDUSDm
+      digits: 5
+      pip_value: 10.0
+      spread_avg: 1.1
+    - symbol: NZDUSD.m
+      mt5_symbol: NZDUSDm
+      digits: 5
+      pip_value: 10.0
+      spread_avg: 1.3
+    - symbol: USDCAD.m
+      mt5_symbol: USDCADm
+      digits: 5
+      pip_value: 7.3
+      spread_avg: 1.2
+    - symbol: USDCHF.m
+      mt5_symbol: USDCHFm
+      digits: 5
+      pip_value: 10.5
+      spread_avg: 1.2
+
+  minors:
+    - symbol: EURGBP.m
+      mt5_symbol: EURGBPm
+      digits: 5
+      pip_value: 12.2
+      spread_avg: 0.9
+    - symbol: EURJPY.m
+      mt5_symbol: EURJPYm
+      digits: 3
+      pip_value: 6.8
+      spread_avg: 1.4
+    - symbol: GBPJPY.m
+      mt5_symbol: GBPJPYm
+      digits: 3
+      pip_value: 6.8
+      spread_avg: 1.6
+    - symbol: EURAUD.m
+      mt5_symbol: EURAUDm
+      digits: 5
+      pip_value: 10.0
+      spread_avg: 1.5
+    - symbol: GBPAUD.m
+      mt5_symbol: GBPAUDm
+      digits: 5
+      pip_value: 10.0
+      spread_avg: 1.8
+    - symbol: AUDJPY.m
+      mt5_symbol: AUDJPYm
+      digits: 3
+      pip_value: 6.8
+      spread_avg: 1.3
+    - symbol: CADJPY.m
+      mt5_symbol: CADJPYm
+      digits: 3
+      pip_value: 6.8
+      spread_avg: 1.3
+    - symbol: CHFJPY.m
+      mt5_symbol: CHFJPYm
+      digits: 3
+      pip_value: 6.8
+      spread_avg: 1.4
+    - symbol: AUDCAD.m
+      mt5_symbol: AUDCADm
+      digits: 5
+      pip_value: 7.3
+      spread_avg: 1.5
+
+crypto:
+  - symbol: BTCUSD.m
+    mt5_symbol: BTCUSDm
+    digits: 2
+    pip_value: 1.0
+    spread_avg: 50.0
+    contract_size: 1
+  - symbol: ETHUSD.m
+    mt5_symbol: ETHUSDm
+    digits: 2
+    pip_value: 0.1
+    spread_avg: 5.0
+    contract_size: 1
+  - symbol: SOLUSD.m
+    mt5_symbol: SOLUSDm
+    digits: 2
+    pip_value: 0.01
+    spread_avg: 0.5
+    contract_size: 1
+
+commodities:
+  gold:
+    - symbol: XAUUSD.m
+      mt5_symbol: XAUUSDm
+      digits: 2
+      pip_value: 1.0
+      spread_avg: 0.3
+      contract_size: 100
+    - symbol: XAGUSD.m
+      mt5_symbol: XAGUSDm
+      digits: 3
+      pip_value: 0.5
+      spread_avg: 0.02
+      contract_size: 100  # verified at runtime via MT5
+
+  oil:
+    - symbol: USOIL.m
+      mt5_symbol: USOILm
+      digits: 2
+      pip_value: 1.0
+      spread_avg: 0.5
+      contract_size: 100
+    - symbol: UKOIL.m
+      mt5_symbol: UKOILm
+      digits: 2
+      pip_value: 1.0
+      spread_avg: 0.6
+      contract_size: 100
+
+stocks:
+  tech:
+    - symbol: AAPL.m
+      mt5_symbol: AAPLm
+      digits: 2
+      pip_value: 1.0        # $0.01 per share per point
+      spread_avg: 0.04      # ~2¢ spread
+      contract_size: 1      # 1 share per "lot" on JustMarkets stocks
+    - symbol: TSLA.m
+      mt5_symbol: TSLAm
+      digits: 2
+      pip_value: 1.0
+      spread_avg: 0.08
+      contract_size: 1
+    - symbol: NVDA.m
+      mt5_symbol: NVDAm
+      digits: 2
+      pip_value: 1.0
+      spread_avg: 0.06
+      contract_size: 1
+    - symbol: MSFT.m
+      mt5_symbol: MSFTm
+      digits: 2
+      pip_value: 1.0
+      spread_avg: 0.02
+      contract_size: 1
+    - symbol: AMZN.m
+      mt5_symbol: AMZNm
+      digits: 2
+      pip_value: 1.0
+      spread_avg: 0.04
+      contract_size: 1
+    - symbol: GOOGL.m
+      mt5_symbol: GOOGLm
+      digits: 2
+      pip_value: 1.0
+      spread_avg: 0.02
+      contract_size: 1
+
+# Timeframe tiers
+timeframes:
+  scalping:  [M1, M5]
+  day_trade: [M15, M30, H1]
+  swing:     [H4, D1]

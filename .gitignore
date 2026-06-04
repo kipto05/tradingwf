@@ -1,0 +1,40 @@
+# -- Python artefacts -----------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+.venv/
+venv/
+.env
+.env.*
+
+# -- Generated logs + runtime data -----------------------------------------------------
+logs/
+data/transcripts/
+*.csv
+*.log
+engine_heartbeat
+
+# -- Claude Code / temp -----------------------------------------------------------------
+.claude/
+.claude_backup/
+.tmp/
+
+# -- OS / editor -----------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# -- MT5 / broker ----------------------------------------------------------------------
+*.exe
+*.dll
+*.mq5
+*.mqh

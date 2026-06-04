@@ -1,0 +1,36 @@
+# Risk Management Configuration
+# All values are editable via the Performance Dashboard
+
+account:
+  balance: 1000          # Starting balance (USD)
+  currency: USD
+
+per_trade:
+  risk_percent: 2.0      # % of balance risked per trade
+  max_spread_multiplier: 3.0  # reject if spread > X × avg spread
+  min_risk_reward: 1.0   # minimum R:R required to enter
+
+portfolio:
+  max_open_trades: 5     # maximum concurrent positions
+  max_open_per_strategy: 2     # prevent one strategy dominating
+  max_open_per_asset_class: 3  # diversify across gold/forex/crypto
+
+daily:
+  drawdown_percent: 3.0  # stop trading if equity drops X% from day start
+  max_trades_per_day: 10 # absolute cap per calendar day
+-closed_hours: []        # e.g. ["00:00-01:00"] — maintenance windows
+
+weekly:
+  max_loss_percent: 5.0  # pause trading if week is down X%
+
+execution:
+  magic_number: 123456   # MT5 magic number for our orders
+  deviation_points: 10   # max slippage allowed (points)
+  order_type: MARKET     # MARKET or LIMIT
+  fill_policy: FOK       # FOK or IOC
+
+backtest:
+  commission_per_lot: 7.0    # round-turn commission in USD
+  slippage_points: 5         # simulated slippage
+  initial_balance: 1000
+  data_years: 3              # how many years of history to download
