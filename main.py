@@ -13,8 +13,15 @@ from typing import Any
 from config.schedule import ScheduleMode, in_active_session
 
 log = logging.getLogger("engine")
-
 BASE_DIR = Path(__file__).resolve().parent
+
+# ---- logging setup ----
+_LOG = BASE_DIR / "logs" / "engine.log"
+_LOG.parent.mkdir(parents=True, exist_ok=True)
+_h = logging.FileHandler(_LOG, encoding="utf-8")
+_h.setFormatter(logging.Formatter("%(asctime)s [%(levelname)s] %(name)s %(message)s"))
+logging.basicConfig(level=logging.INFO, handlers=[_h, logging.StreamHandler()])
+
 HEARTBEAT_FILE = BASE_DIR / "logs" / "engine_heartbeat"
 TRADES_CSV = BASE_DIR / "logs" / "trades.csv"
 _CSV_FIELDS = [
@@ -170,9 +177,8 @@ class TradingEngine:
                         continue
                     log.info(
                         "Signal [%s]: %s -> %s %s @ %.5f SL %.5f TP %.5f",
-                        name, signal.side.value,
-                        signal.tag, strat.meta.symbol,
-                        signal.entry, signal.sl, signal.tp,
+                        name, signal.side.value, signal.tag,
+                        strat.meta.symbol, signal.entry, signal.sl, signal.tp,
                     )
                     if self.order:
                         rec = self.order.execute(
@@ -205,18 +211,27 @@ if __name__ == "__main__":
     ap.add_argument("--server", default="")
     ap.add_argument("--dashboard-only", action="store_true")
     args = ap.parse_args()
+
     mode_map = {
         "continuous": ScheduleMode.CONTINUOUS,
         "session_aware": ScheduleMode.SESSION_AWARE,
     }
     engine_mode = mode_map.get(args.mode, ScheduleMode.CONTINUOUS)
+
     if not args.dashboard_only:
         engine.mode = engine_mode
         engine.poll_interval = args.interval
-        engine.init_mt5(login=args.login, password=args.password, server=args.server)
-        engine.start()
+        try:
+            engine.init_mt5(login=args.login, password=args.password, server=args.server)
+        except Exception as exc:
+            log.error("MT5 init failed (%s) -- dashboard will still start", exc)
+        try:
+            engine.start()
+        except Exception as exc:
+            log.error("Engine start failed (%s)", exc)
     else:
         log.info("Dashboard-only mode -- skipping MT5 connection")
+
     import uvicorn
     uvicorn.run(
         "dashboard.app:app", host="127.0.0.1", port=8000, log_level="info",

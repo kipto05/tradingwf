@@ -34,6 +34,7 @@ class LondonBreakoutGold(BaseStrategy):
             "ema_filter_period": 50,
             "max_retest_bars": 6,
             "min_confidence": 0.4,
+            "min_rr": 1.5,
             "enabled": True,
         },
     )
@@ -50,9 +51,9 @@ class LondonBreakoutGold(BaseStrategy):
 
         # Asian range
         asian = m15[
-            (m15["time"].dt.hour >= p["asian_start_utc"]) &
-            (m15["time"].dt.hour < p["asian_end_utc"]) &
-            (m15["time"].dt.date == now_utc.date())
+            (m15["time"].dt.hour >= p["asian_start_utc"])
+            & (m15["time"].dt.hour < p["asian_end_utc"])
+            & (m15["time"].dt.date == now_utc.date())
         ]
         if len(asian) < 24:
             return None
@@ -85,7 +86,10 @@ class LondonBreakoutGold(BaseStrategy):
             if rr < p["min_rr"]:
                 tp = close + abs(close - sl) * p["rr_multiplier"]
             return Signal(
-                side=Side.BUY, entry=round(close, 2), sl=round(sl, 2), tp=round(tp, 2),
+                side=Side.BUY,
+                entry=round(close, 2),
+                sl=round(sl, 2),
+                tp=round(tp, 2),
                 confidence=min(0.5 + adx_val / 200, 0.85),
                 reason=f"London breakout above Asian high ({asian_high:.2f})",
                 tag="XAUUSD.m",
@@ -99,7 +103,10 @@ class LondonBreakoutGold(BaseStrategy):
             if rr < p["min_rr"]:
                 tp = close - abs(sl - close) * p["rr_multiplier"]
             return Signal(
-                side=Side.SELL, entry=round(close, 2), sl=round(sl, 2), tp=round(tp, 2),
+                side=Side.SELL,
+                entry=round(close, 2),
+                sl=round(sl, 2),
+                tp=round(tp, 2),
                 confidence=min(0.5 + adx_val / 200, 0.85),
                 reason=f"London breakdown below Asian low ({asian_low:.2f})",
                 tag="XAUUSD.m",

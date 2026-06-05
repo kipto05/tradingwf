@@ -12,7 +12,6 @@ from strategies.base import Signal, Side
 
 logger = logging.getLogger("order_manager")
 
-
 @dataclass
 class TradeRecord:
     timestamp_open: datetime
@@ -33,26 +32,25 @@ class TradeRecord:
     ticket: Optional[int]
     notes: str
 
-    def to_csv_row(self) -> dict:
-        return {
-            "timestamp_open": self.timestamp_open.isoformat(),
-            "timestamp_close": self.timestamp_close.isoformat() if self.timestamp_close else "",
-            "strategy": self.strategy,
-            "asset_class": self.asset_class,
-            "symbol": self.symbol,
-            "timeframe": self.timeframe,
-            "side": self.side,
-            "entry_price": self.entry_price,
-            "exit_price": self.exit_price if self.exit_price is not None else "",
-            "sl": self.sl,
-            "tp": self.tp,
-            "lot_size": self.lot_size,
-            "pnl_usd": self.pnl_usd if self.pnl_usd is not None else "",
-            "commission": self.commission,
-            "balance_after": self.balance_after if self.balance_after is not None else "",
-            "notes": self.notes,
-        }
-
+def to_csv_row(self) -> dict:
+    return {
+        "timestamp_open": self.timestamp_open.isoformat(),
+        "timestamp_close": self.timestamp_close.isoformat() if self.timestamp_close else "",
+        "strategy": self.strategy,
+        "asset_class": self.asset_class,
+        "symbol": self.symbol,
+        "timeframe": self.timeframe,
+        "side": self.side,
+        "entry_price": self.entry_price,
+        "exit_price": self.exit_price if self.exit_price is not None else "",
+        "sl": self.sl,
+        "tp": self.tp,
+        "lot_size": self.lot_size,
+        "pnl_usd": self.pnl_usd if self.pnl_usd is not None else "",
+        "commission": self.commission,
+        "balance_after": self.balance_after if self.balance_after is not None else "",
+        "notes": self.notes,
+    }
 
 class OrderManager:
     def __init__(
@@ -64,6 +62,7 @@ class OrderManager:
         self.adapter = adapter
         self.risk = risk_mgr
         self.csv = csv_logger
+        self._open_trades: dict[int, TradeRecord] = {}
 
     # ---- main entry point ----
 
@@ -74,14 +73,14 @@ class OrderManager:
         asset_class: str,
         timeframe: str,
     ) -> TradeRecord | None:
-        """Validate signal -> check live MT5 risk limits -> size -> place -> log."""
+        """Validate signal -> check live MT5 risk limits -> size -> place -> track for close."""
         symbol = signal.tag
 
         if not self._validate_signal(signal):
             logger.info("Signal rejected: %s", signal.reason)
             return None
 
-        # 1. Global portfolio guard (includes per-symbol, per-strategy, total cap)
+        # 1. Global portfolio guard
         ok, reason = self.risk.can_open_trade(
             symbol=symbol,
             strategy_comment=strategy_name,
@@ -136,7 +135,10 @@ class OrderManager:
             ticket=ticket,
             notes=signal.reason,
         )
-        self.csv.log_trade(record)
+
+        # Store for later close — do NOT write to CSV yet
+        self._open_trades[ticket] = record
+
         logger.info(
             "Executed [%s] %s %.4f lots ticket=%s balance=%.2f",
             symbol, signal.side.value, lot, ticket, balance,
@@ -181,31 +183,64 @@ class OrderManager:
                 logger.error("Close position #%s failed: %s", ticket, exc)
                 continue
 
-            # Build a partial TradeRecord from what we know
-            entry = float(pos.get("price_open", 0.0))
-            record = TradeRecord(
-                timestamp_open=datetime.fromtimestamp(
-                    float(pos.get("time", 0))
-                ),
-                timestamp_close=datetime.now(),
-                strategy=self._comment_to_strategy(pos.get("comment", "")),
-                asset_class="",
-                symbol=symbol,
-                timeframe="",
-                side="BUY" if is_buy else "SELL",
-                entry_price=entry,
-                exit_price=close_result.get("price", current),
-                sl=sl,
-                tp=tp,
-                lot_size=float(pos.get("volume", 0.0)),
-                pnl_usd=round(profit, 2),
-                commission=0.0,
-                balance_after=round(balance, 2),
-                ticket=ticket,
-                notes=f"Closed {'SL' if sl_hit else 'TP'}",
-            )
-            self.csv.log_trade(record)
-            closed.append(record)
+            # Retrieve the open-trade record we stored at order-open time.
+            # Fall back to a partial record built from position data (handles
+            # positions that existed before this refactor was deployed).
+            open_record = self._open_trades.pop(ticket, None)
+            if open_record is not None:
+                close_reason = f"Closed {'SL' if sl_hit else 'TP'}"
+                full = TradeRecord(
+                    timestamp_open=open_record.timestamp_open,
+                    timestamp_close=datetime.now(),
+                    strategy=open_record.strategy,
+                    asset_class=open_record.asset_class,
+                    symbol=symbol,
+                    timeframe=open_record.timeframe,
+                    side="BUY" if is_buy else "SELL",
+                    entry_price=open_record.entry_price,
+                    exit_price=close_result.get("price", current),
+                    sl=sl,
+                    tp=tp,
+                    lot_size=float(pos.get("volume", 0.0)),
+                    pnl_usd=round(profit, 2),
+                    commission=0.0,
+                    balance_after=round(balance, 2),
+                    ticket=ticket,
+                    notes=f"{open_record.notes} | {close_reason}",
+                )
+            else:
+                # Position pre-dates the tracking dict — construct best-effort record.
+                # Fields like asset_class and timeframe are unavailable from the
+                # position object alone; log a warning so these rows can be reviewed.
+                logger.warning(
+                    "Fallback close for ticket #%s (%s %s): open record not in _open_trades. "
+                    "Strategy, asset_class, and timeframe may be incomplete.",
+                    ticket, pos.get("symbol", "?"), pos.get("comment", ""),
+                )
+                pos_time_raw = float(pos.get("time") or 0)
+                ts_open = datetime.fromtimestamp(pos_time_raw) if pos_time_raw > 0 else datetime.now()
+                full = TradeRecord(
+                    timestamp_open=ts_open,
+                    timestamp_close=datetime.now(),
+                    strategy=self._comment_to_strategy(pos.get("comment", "")),
+                    asset_class="",
+                    symbol=symbol,
+                    timeframe="",
+                    side="BUY" if is_buy else "SELL",
+                    entry_price=float(pos.get("price_open", 0.0)),
+                    exit_price=close_result.get("price", current),
+                    sl=sl,
+                    tp=tp,
+                    lot_size=float(pos.get("volume", 0.0)),
+                    pnl_usd=round(profit, 2),
+                    commission=0.0,
+                    balance_after=round(balance, 2),
+                    ticket=ticket,
+                    notes=f"Closed {'SL' if sl_hit else 'TP'}",
+                )
+
+            self.csv.log_trade(full)
+            closed.append(full)
             logger.info(
                 "Closed #%s %s pnl=%.2f balance=%.2f (new balance)",
                 ticket, symbol, profit, balance,
@@ -230,6 +265,11 @@ class OrderManager:
 
     @staticmethod
     def _comment_to_strategy(comment: str) -> str:
-        """Extract strategy name from 'StrategyName|asset|tf' comment."""
+        """Extract strategy name from 'StrategyName|asset|tf' comment.
+
+        Relies on the pipe-delimited format set in execute():
+            f"{strategy_name}|{asset_class}|{timeframe}"[:32]
+        If the format changes, update this parser accordingly.
+        """
         parts = (comment or "").split("|")
         return parts[0] if parts else comment

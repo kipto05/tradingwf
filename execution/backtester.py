@@ -54,7 +54,7 @@ def run_backtest(
     tf_list = strategy.meta.timeframes
     data: dict[str, pd.DataFrame] = {}
     for tf in tf_list:
-        df = adapter.get_rates(strategy.meta.symbol, tf, n_bars)
+        df = adapter.get_ohlc(strategy.meta.symbol, tf, n_bars)
         if df.empty:
             logger.warning("No data for %s on %s", strategy.meta.symbol, tf)
             return None
@@ -80,7 +80,7 @@ def run_backtest(
 
         # --- entry ---
         if position is None and signal and signal.side.value != "HOLD":
-            risk_usd = 1000.0 * RISK.per_trade_risk_pct if False else 1000.0 * 0.02
+            risk_usd = 1000.0 * 0.02
             entry = signal.entry
             sl_dist = abs(entry - signal.sl)
             if sl_dist == 0:
