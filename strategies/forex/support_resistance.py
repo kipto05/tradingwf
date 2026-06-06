@@ -20,7 +20,8 @@ class ForexSRBreakout(BaseStrategy):
         asset_class="forex",
         symbol="EURUSD.m",
         timeframes=["H1", "H4"],
-        params={
+        symbols=["EURUSD.m"],
+    params={
             "sr_window": 30,
             "min_touches": 2,
             "atr_period": 14,

@@ -20,13 +20,13 @@ class CryptoEMACrossM5(BaseStrategy):
         asset_class="crypto",
         symbol="BTCUSD.m",
         timeframes=["M5", "H1"],
-        params={
+        symbols=["BTCUSD.m", "ETHUSD.m"],
+    params={
             "fast": 8,
             "slow": 21,
             "atr_period": 14,
             "sl_atr_mult": 2.0,
             "tp_atr_mult": 3.0,
-            "symbols": ["BTCUSD.m", "ETHUSD.m"],
             "min_confidence": 0.35,
             "enabled": True,
         },

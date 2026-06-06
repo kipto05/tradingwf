@@ -20,7 +20,8 @@ class MACrossRibbon(BaseStrategy):
         asset_class="gold",
         symbol="XAUUSD.m",
         timeframes=["M30", "H1", "H4"],
-        params={
+        symbols=["XAUUSD.m"],
+    params={
             "fast": 20,
             "slow": 50,
             "atr_period": 14,

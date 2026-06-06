@@ -20,13 +20,13 @@ class ForexEMACrossM5(BaseStrategy):
         asset_class="forex",
         symbol="EURUSD.m",
         timeframes=["M5", "H1"],
-        params={
+        symbols=["EURUSD.m", "GBPUSD.m"],
+    params={
             "fast": 8,
             "slow": 21,
             "atr_period": 14,
             "sl_atr_mult": 1.0,
             "tp_atr_mult": 1.8,
-            "symbols": ["EURUSD.m", "GBPUSD.m"],
             "min_confidence": 0.35,
             "enabled": True,
         },

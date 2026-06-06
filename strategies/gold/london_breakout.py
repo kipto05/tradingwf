@@ -21,7 +21,8 @@ class LondonBreakoutGold(BaseStrategy):
         asset_class="gold",
         symbol="XAUUSD.m",
         timeframes=["M15", "H1"],
-        params={
+        symbols=["XAUUSD.m"],
+    params={
             "asian_start_utc": 0,
             "asian_end_utc": 7,
             "london_open_utc": 8,

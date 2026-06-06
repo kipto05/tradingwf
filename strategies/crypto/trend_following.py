@@ -23,7 +23,8 @@ class CryptoTrendFollowing(BaseStrategy):
         asset_class="crypto",
         symbol="BTCUSD.m",
         timeframes=["H1", "H4", "D1"],
-        params={
+        symbols=["BTCUSD.m"],
+    params={
             "sma_fast": 20,
             "sma_slow": 50,
             "rsi_period": 14,

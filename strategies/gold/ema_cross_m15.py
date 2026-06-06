@@ -20,13 +20,13 @@ class GoldEMACrossM15(BaseStrategy):
         asset_class="gold",
         symbol="XAUUSD.m",
         timeframes=["M15", "H1"],
-        params={
+        symbols=["XAUUSD.m"],
+    params={
             "fast": 8,
             "slow": 21,
             "atr_period": 14,
             "sl_atr_mult": 1.5,
             "tp_atr_mult": 2.5,
-            "symbols": ["XAUUSD.m"],
             "min_confidence": 0.35,
             "enabled": True,
         },

@@ -28,7 +28,8 @@ class GoldFibRetracement(BaseStrategy):
         asset_class="gold",
         symbol="XAUUSD.m",
         timeframes=["H1", "H4"],
-        params={
+        symbols=["XAUUSD.m"],
+    params={
             "swing_lookback_h4": 30,
             "atr_period": 14,
             "rsi_period": 14,

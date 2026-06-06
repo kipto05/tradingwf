@@ -26,7 +26,8 @@ class ForexEMACross(BaseStrategy):
         asset_class="forex",
         symbol="EURUSD.m",
         timeframes=["M30", "H1", "H4"],
-        params={
+        symbols=["EURUSD.m"],
+    params={
             "fast": 10,
             "slow": 50,
             "atr_period": 14,

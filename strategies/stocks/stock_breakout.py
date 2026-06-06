@@ -24,7 +24,8 @@ class StockBreakout(BaseStrategy):
         asset_class="stocks",
         symbol="AAPL.m",
         timeframes=["H1", "H4"],
-        params={
+        symbols=["AAPL.m"],
+    params={
             "lookback_high": 20,        # N-day high for breakout
             "lookback_low": 20,         # N-day low for breakdown
             "vol_sma_period": 20,       # volume SMA for volume surge check

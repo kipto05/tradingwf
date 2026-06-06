@@ -33,6 +33,7 @@ class StrategyMeta:
     timeframes: list[str]
     default_risk: float = 0.02
     enabled: bool = True
+    symbols: list[str] | None = None  # multi-asset list; None or [symbol] = single
     params: dict = field(default_factory=dict)
 
 

@@ -18,6 +18,7 @@ logger = logging.getLogger("backtester")
 if TYPE_CHECKING:
     from execution.mt5_adapter import MT5Adapter
     from strategies.base import BaseStrategy, Signal
+from execution.risk_manager import RISK  # noqa: E402
 
 
 @dataclass
@@ -41,6 +42,7 @@ def run_backtest(
     adapter: "MT5Adapter",
     n_bars: int = 3000,
     output_dir: Path = Path("data/backtests"),
+    symbol: str | None = None,
 ) -> BacktestResult | None:
     """
     Walk-forward backtest:
@@ -49,19 +51,21 @@ def run_backtest(
     3. Simulate entries/exits with commission + slippage
     """
     from strategies.registry import get_registered
+
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    use_symbol = symbol or strategy.meta.symbol
     tf_list = strategy.meta.timeframes
     data: dict[str, pd.DataFrame] = {}
     for tf in tf_list:
-        df = adapter.get_rates(strategy.meta.symbol, tf, n_bars)
+        df = adapter.get_ohlc(use_symbol, tf, n_bars)
         if df.empty:
-            logger.warning("No data for %s on %s", strategy.meta.symbol, tf)
+            logger.warning("No data for %s on %s", use_symbol, tf)
             return None
         data[tf] = df
 
     # Simulate on the highest TF as the execution frame
-    exec_tf = tf_list[-1]  # e.g. H4 if ["M30","H1","H4"]
+    exec_tf = tf_list[-1]  # e.g. H4 if ["M30", "H1", "H4"]
     df = data[exec_tf].copy()
 
     equity = [1000.0]
@@ -80,13 +84,22 @@ def run_backtest(
 
         # --- entry ---
         if position is None and signal and signal.side.value != "HOLD":
-            risk_usd = 1000.0 * RISK.per_trade_risk_pct if False else 1000.0 * 0.02
+            # Drop low-confidence / bad R:R signals (validate against strategy params)
+            if not strategy.validate(signal):
+                continue
+            risk_usd = 1000.0 * RISK.per_trade_risk_pct
             entry = signal.entry
             sl_dist = abs(entry - signal.sl)
             if sl_dist == 0:
                 continue
-            contract = adapter.get_symbol_info(strategy.meta.symbol)["contract_size"]
-            lot = min(0.1, risk_usd / (sl_dist * contract))  # simplified
+            info = adapter.get_symbol_info(use_symbol)
+            contract = info.get("contract_size") or info.get("trade_contract_size", 100000)
+            lot_raw = risk_usd / (sl_dist * contract)
+            lot_min = info.get("volume_min", 0.01)
+            lot_max = info.get("volume_max", 100.0)
+            lot_step = info.get("volume_step", 0.01)
+            lot = max(lot_min, min(round(lot_raw / lot_step) * lot_step, lot_max))
+            lot = round(lot, 2)  # simplified
             position = {
                 "side": signal.side.value,
                 "entry": entry + (-0.0002 if signal.side.value == "BUY" else 0.0002),
@@ -100,11 +113,17 @@ def run_backtest(
         if position is not None:
             bar = df.iloc[i]
             exit_price = None
-            hit = "TP" if bar["high"] >= position["tp"] and position["side"] == "BUY" else \
-                  "TP" if bar["low"] <= position["tp"] and position["side"] == "SELL" else \
-                  "SL" if bar["low"] <= position["sl"] and position["side"] == "BUY" else \
-                  "SL" if bar["high"] >= position["sl"] and position["side"] == "SELL" else \
-                  None
+            hit = (
+                "TP"
+                if bar["high"] >= position["tp"] and position["side"] == "BUY"
+                else "TP"
+                if bar["low"] <= position["tp"] and position["side"] == "SELL"
+                else "SL"
+                if bar["low"] <= position["sl"] and position["side"] == "BUY"
+                else "SL"
+                if bar["high"] >= position["sl"] and position["side"] == "SELL"
+                else None
+            )
             if hit == "TP":
                 exit_price = position["tp"]
             elif hit == "SL":
@@ -113,17 +132,20 @@ def run_backtest(
                 exit_price = bar["close"]
 
             if exit_price is not None:
-                pnl = (exit_price - position["entry"]) * position["lot"] * \
-                      (1 if position["side"] == "BUY" else -1)
+                pnl = (exit_price - position["entry"]) * position["lot"] * (
+                    1 if position["side"] == "BUY" else -1
+                )
                 pnl -= commission * position["lot"]
                 equity.append(equity[-1] + pnl)
-                trades.append({
-                    "entry": position["entry"],
-                    "exit": exit_price,
-                    "side": position["side"],
-                    "pnl": pnl,
-                    "hit": hit,
-                })
+                trades.append(
+                    {
+                        "entry": position["entry"],
+                        "exit": exit_price,
+                        "side": position["side"],
+                        "pnl": pnl,
+                        "hit": hit,
+                    }
+                )
                 strategy.on_trade_closed({"pnl": pnl, "side": position["side"]})
                 position = None
 
@@ -150,7 +172,7 @@ def run_backtest(
 
     result = BacktestResult(
         strategy=strategy.meta.name,
-        symbol=strategy.meta.symbol,
+        symbol=use_symbol,
         timeframe=strategy.meta.timeframes[-1],
         total_trades=len(trades),
         win_rate=len(wins) / len(pnls),
@@ -164,10 +186,16 @@ def run_backtest(
     )
 
     # Save
-    eq.to_csv(output_dir / f"{strategy.meta.name}_{strategy.meta.symbol}_equity.csv")
+    eq.to_csv(output_dir / f"{strategy.meta.name}_{use_symbol}_equity.csv")
     pd.DataFrame(trades).to_csv(
-        output_dir / f"{strategy.meta.name}_{strategy.meta.symbol}_trades.csv", index=False
+        output_dir / f"{strategy.meta.name}_{use_symbol}_trades.csv", index=False
     )
-    logger.info("Backtest complete: %s %s — %d trades, net PnL $%.2f, Sharpe %.2f",
-                result.strategy, result.symbol, result.total_trades, result.net_pnl, result.sharpe_approx)
+    logger.info(
+        "Backtest complete: %s %s — %d trades, net PnL $%.2f, Sharpe %.2f",
+        result.strategy,
+        result.symbol,
+        result.total_trades,
+        result.net_pnl,
+        result.sharpe_approx,
+    )
     return result

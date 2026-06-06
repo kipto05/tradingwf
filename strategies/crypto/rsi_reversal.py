@@ -23,7 +23,8 @@ class RSIReversalCrypto(BaseStrategy):
         asset_class="crypto",
         symbol="BTCUSD.m",
         timeframes=["M15", "H1"],
-        params={
+        symbols=["BTCUSD.m"],
+    params={
             "rsi_period": 14,
             "rsi_oversold": 30,
             "rsi_overbought": 70,
