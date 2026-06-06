@@ -34,7 +34,6 @@ class LondonBreakoutGold(BaseStrategy):
             "ema_filter_period": 50,
             "max_retest_bars": 6,
             "min_confidence": 0.4,
-            "min_rr": 1.5,
             "enabled": True,
         },
     )
@@ -82,9 +81,6 @@ class LondonBreakoutGold(BaseStrategy):
         if close > asian_high and close > ema50:
             sl = asian_low - atr_val * 0.3
             tp = close + asian_range * p["rr_multiplier"]
-            rr = abs(tp - close) / abs(close - sl)
-            if rr < p["min_rr"]:
-                tp = close + abs(close - sl) * p["rr_multiplier"]
             return Signal(
                 side=Side.BUY,
                 entry=round(close, 2),
@@ -99,9 +95,6 @@ class LondonBreakoutGold(BaseStrategy):
         if close < asian_low and close < ema50:
             sl = asian_high + atr_val * 0.3
             tp = close - asian_range * p["rr_multiplier"]
-            rr = abs(close - tp) / abs(sl - close)
-            if rr < p["min_rr"]:
-                tp = close - abs(sl - close) * p["rr_multiplier"]
             return Signal(
                 side=Side.SELL,
                 entry=round(close, 2),

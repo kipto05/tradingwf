@@ -187,7 +187,7 @@ class MockMT5Adapter:
 
     def get_account_info(self) -> dict:
         self._equity = self._balance + sum(
-            (p.get("current_price", p["tp"]) - p["entry"]) * p.get("lot_size", 0.01)
+            (p.get("current_price", p["tp"]) - p["entry"]) * p["lot"]
             * (1 if p["side"] == "BUY" else -1)
             for p in self._positions
         )

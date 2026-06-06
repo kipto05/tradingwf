@@ -1,0 +1,35 @@
+{
+  "Gold EMA Cross M15": {
+    "enabled": true
+  },
+  "Fib Retracement (Gold)": {
+    "enabled": true
+  },
+  "London Breakout (Gold)": {
+    "enabled": true
+  },
+  "MA Cross Ribbon (Gold/Silver)": {
+    "enabled": true
+  },
+  "Forex EMA Cross": {
+    "enabled": true
+  },
+  "Forex EMA Cross M5": {
+    "enabled": true
+  },
+  "Forex S/R Breakout": {
+    "enabled": true
+  },
+  "Crypto EMA Cross M5": {
+    "enabled": true
+  },
+  "RSI Reversal (Crypto)": {
+    "enabled": true
+  },
+  "Crypto Trend Following": {
+    "enabled": true
+  },
+  "Stock Breakout (AAPL/tech)": {
+    "enabled": true
+  }
+}

@@ -8,245 +8,86 @@
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  background: #0f1117;
-  color: #e0e0e0;
-  display: flex;
-  min-height: 100vh;
+font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+background: #0f1117; color: #e0e0e0; display: flex; min-height: 100vh;
 }
-
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  background: #161822;
-  padding: 20px 0;
-  border-right: 1px solid #2a2d3a;
-  flex-shrink: 0;
-}
-.sidebar h2 {
-  color: #00d4aa;
-  font-size: 1rem;
-  padding: 0 20px 15px;
-  letter-spacing: .5px;
-}
+/* ── Sidebar ─────────────────────────────── */
+.sidebar { width: 220px; background: #161822; padding: 20px 0; border-right: 1px solid #2a2d3a; flex-shrink: 0; }
+.sidebar h2 { color: #00d4aa; font-size: 1rem; padding: 0 20px 15px; letter-spacing: .5px; }
 .sidebar button {
-  display: block;
-  width: 100%;
-  text-align: left;
-  padding: 11px 20px;
-  background: none;
-  border: none;
-  color: #c0c4d0;
-  font-size: .9rem;
-  cursor: pointer;
-  border-left: 3px solid transparent;
-  transition: all .15s;
+display: block; width: 100%; text-align: left; padding: 11px 20px; background: none; border: none;
+color: #c0c4d0; font-size: .9rem; cursor: pointer; border-left: 3px solid transparent; transition: all .15s;
 }
 .sidebar button:hover { background: #1d2030; color: #fff; }
-.sidebar button.active {
-  color: #00d4aa;
-  border-left-color: #00d4aa;
-  background: #1d2030;
-  font-weight: 600;
-}
-.sidebar .section-label {
-  font-size: .7rem;
-  text-transform: uppercase;
-  color: #555a6e;
-  padding: 14px 20px 4px;
-  letter-spacing: 1px;
-}
-
-/* Main panel */
-.main {
-  flex: 1;
-  padding: 24px 32px;
-  overflow-y: auto;
-}
+.sidebar button.active { color: #00d4aa; border-left-color: #00d4aa; background: #1d2030; font-weight: 600; }
+.sidebar .section-label { font-size: .7rem; text-transform: uppercase; color: #555a6e; padding: 14px 20px 4px; letter-spacing: 1px; }
+/* ── Main panel ─────────────────────────── */
+.main { flex: 1; padding: 24px 32px; overflow-y: auto; }
 .tab { display: none; }
 .tab.active { display: block; }
-
-/* Cards */
-.card-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 24px;
-}
-.card {
-  background: #1a1d2b;
-  border: 1px solid #2a2d3a;
-  border-radius: 10px;
-  padding: 18px 20px;
-  transition: border-color .2s;
-}
+/* ── Cards ──────────────────────────────── */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
+.card { background: #1a1d2b; border: 1px solid #2a2d3a; border-radius: 10px; padding: 18px 20px; transition: border-color .2s; }
 .card:hover { border-color: #3a3f52; }
-.card .label {
-  font-size: .78rem;
-  color: #7d829a;
-  text-transform: uppercase;
-  letter-spacing: .8px;
-}
-.card .value {
-  font-size: 1.8rem;
-  font-weight: 700;
-  margin-top: 6px;
-}
+.card .label { font-size: .78rem; color: #7d829a; text-transform: uppercase; letter-spacing: .8px; }
+.card .value { font-size: 1.8rem; font-weight: 700; margin-top: 6px; }
 .card .value.green { color: #00d4aa; }
 .card .value.red { color: #ff5a5a; }
 .card .value.blue { color: #5aa8ff; }
 .card .value.orange { color: #ffb74d; }
-
-/* Tables */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 12px 0;
-  font-size: .85rem;
-}
+/* ── Tables ─────────────────────────────── */
+table { width: 100%; border-collapse: collapse; margin: 12px 0; font-size: .85rem; }
 th {
-  background: #1d2030;
-  color: #7d829a;
-  text-transform: uppercase;
-  font-size: .72rem;
-  letter-spacing: .8px;
-  padding: 10px 12px;
-  text-align: left;
-  border-bottom: 1px solid #2a2d3a;
+background: #1d2030; color: #7d829a; text-transform: uppercase; font-size: .72rem;
+letter-spacing: .8px; padding: 10px 12px; text-align: left; border-bottom: 1px solid #2a2d3a;
 }
-td {
-  padding: 9px 12px;
-  border-bottom: 1px solid #1f2230;
-}
+td { padding: 9px 12px; border-bottom: 1px solid #1f2230; }
 tr:hover td { background: #1d2030; }
 .win { color: #00d4aa; }
 .loss { color: #ff5a5a; }
-
-/* Buttons */
-button.primary {
-  background: #00d4aa;
-  color: #0f1117;
-  border: none;
-  padding: 9px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: .85rem;
-}
+/* ── Buttons ────────────────────────────── */
+button.primary { background: #00d4aa; color: #0f1117; border: none; padding: 9px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: .85rem; }
 button.primary:hover { background: #00f0c0; }
-button.danger {
-  background: transparent;
-  border: 1px solid #ff5a5a;
-  color: #ff5a5a;
-  padding: 9px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: .85rem;
-}
+button.danger { background: transparent; border: 1px solid #ff5a5a; color: #ff5a5a; padding: 9px 18px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: .85rem; }
 button.danger:hover { background: #ff5a5a22; }
-button.ghost {
-  background: #1d2030;
-  color: #c0c4d0;
-  border: 1px solid #3a3f52;
-  padding: 9px 18px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: .85rem;
-}
+button.ghost { background: #1d2030; color: #c0c4d0; border: 1px solid #3a3f52; padding: 9px 18px; border-radius: 6px; cursor: pointer; font-size: .85rem; }
 button.ghost:hover { border-color: #5a6080; }
-
-/* Inputs */
-input, select {
-  background: #1a1d2b;
-  border: 1px solid #2a2d3a;
-  color: #e0e0e0;
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: .85rem;
+/* ── Toggle ────────────────────────────── */
+.toggle-btn {
+padding: 4px 12px; border-radius: 12px; font-size: .75rem; font-weight: 600;
+cursor: pointer; border: 1px solid transparent; transition: all .15s;
 }
+.toggle-btn.on { background: #00d4aa22; color: #00d4aa; border-color: #00d4aa66; }
+.toggle-btn.on:hover { background: #00d4aa44; }
+.toggle-btn.disabled { background: #ff5a5a11; color: #ff5a5a; border-color: #ff5a5a44; }
+.toggle-btn.disabled:hover { background: #ff5a5a33; }
+/* ── Inputs ─────────────────────────────── */
+input, select { background: #1a1d2b; border: 1px solid #2a2d3a; color: #e0e0e0; padding: 8px 12px; border-radius: 6px; font-size: .85rem; }
 input:focus, select:focus { outline: none; border-color: #00d4aa; }
-
-/* Grid layouts */
-.flex-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-  margin-bottom: 16px;
-}
+/* ── Grid layouts ───────────────────────── */
+.flex-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 16px; }
 .flex-row > * { flex-shrink: 0; }
 .flex-grow { flex: 1; }
-
-/* Tabs */
+/* ── Tabs sub-nav ───────────────────────── */
 .sub-tabs { display: flex; gap: 8px; margin-bottom: 20px; border-bottom: 1px solid #2a2d3a; padding-bottom: 0; }
-.sub-tabs button {
-  background: none;
-  border: none;
-  color: #7d829a;
-  padding: 8px 14px;
-  cursor: pointer;
-  font-size: .85rem;
-  border-bottom: 2px solid transparent;
-}
+.sub-tabs button { background: none; border: none; color: #7d829a; padding: 8px 14px; cursor: pointer; font-size: .85rem; border-bottom: 2px solid transparent; }
 .sub-tabs button.active { color: #00d4aa; border-bottom-color: #00d4aa; }
-
-.section-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 24px 0 2px;
-  color: #fff;
-}
-.section-sub {
-  color: #7d829a;
-  font-size: .82rem;
-  margin-bottom: 14px;
-}
-
+.section-title { font-size: 1.1rem; font-weight: 600; margin: 24px 0 2px; color: #fff; }
+.section-sub { color: #7d829a; font-size: .82rem; margin-bottom: 14px; }
 /* Upload */
-.upload-zone {
-  border: 2px dashed #2a2d3a;
-  border-radius: 10px;
-  padding: 30px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color .2s;
-  margin-bottom: 16px;
-}
+.upload-zone { border: 2px dashed #2a2d3a; border-radius: 10px; padding: 30px; text-align: center; cursor: pointer; transition: border-color .2s; margin-bottom: 16px; }
 .upload-zone:hover { border-color: #00d4aa; }
 .upload-zone input { display: none; }
-
 /* Config grid */
-.config-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 12px;
-}
+.config-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
 @media(max-width: 900px) { .config-grid { grid-template-columns: 1fr 1fr; } }
-.config-item label {
-  display: block;
-  font-size: .75rem;
-  color: #7d829a;
-  margin-bottom: 4px;
-  text-transform: uppercase;
-  letter-spacing: .5px;
-}
-.config-item input,
-.config-item select { width: 100%; }
-
+.config-item label { display: block; font-size: .75rem; color: #7d829a; margin-bottom: 4px; text-transform: uppercase; letter-spacing: .5px; }
+.config-item input, .config-item select { width: 100%; }
 /* Status badge */
-.badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: .75rem;
-  font-weight: 600;
-}
+.badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: .75rem; font-weight: 600; }
 .badge.connected { background: #00d4aa22; color: #00d4aa; }
 .badge.disconnected { background: #ff5a5a22; color: #ff5a5a; }
 .badge.live { background: #ffb74d22; color: #ffb74d; }
-.badge.blue { background: #5aa8ff22; color: #5aa8ff; }
-
 h1 { font-size: 1.4rem; margin-bottom: 4px; color: #fff; }
 .subtitle { color: #7d829a; font-size: .88rem; margin-bottom: 20px; }
 </style>
@@ -255,17 +96,17 @@ h1 { font-size: 1.4rem; margin-bottom: 4px; color: #fff; }
 
 <!-- ══════════ SIDEBAR ══════════ -->
 <aside class="sidebar">
-  <h2>⬡ TRADING WF</h2>
-  <button data-tab="tab-overview" class="active">📊 Workflow</button>
-  <button data-tab="tab-charts">📈 Charts & Analysis</button>
-  <button data-tab="tab-strategies">🎯 Strategies</button>
-  <button data-tab="tab-backtest">🔁 Backtest</button>
-  <button data-tab="tab-transcripts">📎 Transcripts</button>
-  <button data-tab="tab-settings">⚙️ Settings</button>
-  <div class="section-label" style="margin-top:16px;">Engine</div>
-  <button id="btn-start">▶ Start Engine</button>
-  <button id="btn-stop" style="color:#ff5a5a;">⬛ Stop Engine</button>
-  <button id="btn-cycle">⏯ Trigger Cycle</button>
+<h2>⬡ TRADING WF</h2>
+<button data-tab="tab-overview" class="active">📊 Workflow</button>
+<button data-tab="tab-charts">📈 Charts & Analysis</button>
+<button data-tab="tab-strategies">🎯 Strategies</button>
+<button data-tab="tab-backtest">🔁 Backtest</button>
+<button data-tab="tab-transcripts">📎 Transcripts</button>
+<button data-tab="tab-settings">⚙️ Settings</button>
+<div class="section-label" style="margin-top:16px;">Engine</div>
+<button id="btn-start">▶ Start Engine</button>
+<button id="btn-stop" style="color:#ff5a5a;">⬛ Stop Engine</button>
+<button id="btn-cycle">⏯ Trigger Cycle</button>
 </aside>
 
 <!-- ══════════ MAIN ══════════ -->
@@ -273,212 +114,216 @@ h1 { font-size: 1.4rem; margin-bottom: 4px; color: #fff; }
 
 <!-- ─── TAB: WORKFLOW ─── -->
 <div id="tab-overview" class="tab active">
-  <h1>Workflow Overview</h1>
-  <p class="subtitle">Real-time trading dashboard — all strategies, all sessions.</p>
+<h1>Workflow Overview</h1>
+<p class="subtitle">Real-time trading dashboard — all strategies, all sessions.</p>
 
-  <!-- Status bar -->
-  <div class="flex-row">
-    <span id="status-badge" class="badge disconnected">Disconnected</span>
-    <span class="badge blue" id="mode-badge">continuous mode</span>
-    <span id="open-count" class="badge orange" style="display:none;">0 open trades</span>
-  </div>
+<!-- Status bar -->
+<div class="flex-row">
+<span id="status-badge" class="badge disconnected">Disconnected</span>
+<span class="badge blue" id="mode-badge">continuous mode</span>
+<span id="open-count" class="badge orange" style="display:none;">0 open trades</span>
+</div>
 
-  <!-- Stats cards -->
-  <div class="card-grid">
-    <div class="card">
-      <div class="label">Current Balance</div>
-      <div class="value green" id="s-bal">—</div>
-    </div>
-    <div class="card">
-      <div class="label">Open Trades</div>
-      <div class="value orange" id="s-open">0</div>
-    </div>
-    <div class="card">
-      <div class="label">Total Trades (CSV)</div>
-      <div class="value blue" id="s-total">—</div>
-    </div>
-    <div class="card">
-      <div class="label">Win Rate</div>
-      <div class="value blue" id="s-wr">—</div>
-    </div>
-    <div class="card">
-      <div class="label">Net PnL</div>
-      <div class="value" id="s-pnl">—</div>
-    </div>
-    <div class="card">
-      <div class="label">Drawdown</div>
-      <div class="value" id="s-dd">—</div>
-      <div class="sub" id="s-dd-pct">from peak</div>
-    </div>
-  </div>
+<!-- Stats cards -->
+<div class="card-grid">
+<div class="card"><div class="label">Total Trades</div><div class="value blue" id="s-total">—</div></div>
+<div class="card"><div class="label">Win Rate</div><div class="value blue" id="s-wr">—</div></div>
+<div class="card"><div class="label">Net PnL</div><div class="value" id="s-pnl">—</div></div>
+<div class="card"><div class="label">Max Balance</div><div class="value green" id="s-bal">—</div></div>
+<div class="card"><div class="label">Wins / Losses</div><div class="value orange" id="s-wl">—</div></div>
+<div class="card"><div class="label">Avg Win / Loss</div><div class="value blue" id="s-avg">—</div></div>
+</div>
 
-  <!-- Mini equity -->
-  <div class="section-title">Equity Curve</div>
-  <p class="section-sub">Account equity over time (live-updating).</p>
-  <div id="equity-chart" style="background:#1a1d2b;border-radius:10px;padding:12px;height:260px;"></div>
+<!-- Mini equity -->
+<div class="section-title">Equity Curve</div>
+<p class="section-sub">Account equity over time (live-updating).</p>
+<div id="equity-chart" style="background:#1a1d2b;border-radius:10px;padding:12px;height:260px;"></div>
 
-  <!-- Recent trades table -->
-  <div class="section-title">Recent Trades</div>
-  <p class="section-sub">Last 5 trades from trades.csv.</p>
-  <div style="overflow-x:auto;">
-    <table id="trades-table">
-      <thead>
-        <tr>
-          <th>Time Open</th><th>Strategy</th><th>Symbol</th><th>TF</th>
-          <th>Side</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th>
-          <th>PnL</th><th>Notes</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+<!-- Recent trades table -->
+<div class="section-title">Recent Trades</div>
+<p class="section-sub">Last 25 trades from trades.csv.</p>
+<div style="overflow-x:auto;">
+<table id="trades-table">
+<thead>
+<tr>
+<th>Time Open</th><th>Strategy</th><th>Symbol</th><th>TF</th>
+<th>Side</th><th>Entry</th><th>Exit</th><th>SL</th><th>TP</th>
+<th>PnL</th><th>Notes</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
 </div>
 
 <!-- ─── TAB: CHARTS ─── -->
 <div id="tab-charts" class="tab">
-  <h1>Charts & Analytics</h1>
-  <p class="subtitle">Strategy and asset class breakdowns.</p>
-  <div id="charts-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
-    <div id="chart-strategy" style="background:#1a1d2b;border-radius:10px;padding:12px;height:380px;"></div>
-    <div id="chart-asset" style="background:#1a1d2b;border-radius:10px;padding:12px;height:380px;"></div>
-  </div>
-  <div style="margin-top:16px;">
-    <div id="chart-weekly" style="background:#1a1d2b;border-radius:10px;padding:12px;height:300px;"></div>
-  </div>
+<h1>Charts & Analytics</h1>
+<p class="subtitle">Strategy and asset class breakdowns. Filter by strategy to inspect individual performance.</p>
+
+<!-- TASK 13 — strategy selector for the charts tab -->
+<div class="flex-row" style="margin-bottom:14px;">
+<select id="chart-strategy-filter" style="width:260px;">
+<option value="">All strategies</option>
+</select>
+</div>
+
+<div id="charts-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+<div id="chart-strategy" style="background:#1a1d2b;border-radius:10px;padding:12px;height:380px;"></div>
+<div id="chart-asset" style="background:#1a1d2b;border-radius:10px;padding:12px;height:380px;"></div>
+</div>
+<div style="margin-top:16px;">
+<div id="chart-weekly" style="background:#1a1d2b;border-radius:10px;padding:12px;height:300px;"></div>
+</div>
+<!-- TASK 13 — zero-trade placeholder for filtered strategy -->
+<p id="chart-zero-trade-msg" class="section-sub" style="display:none;color:#ffb74d;">
+No closed trades yet for the selected strategy. Once trades are closed they will appear here.
+</p>
 </div>
 
 <!-- ─── TAB: STRATEGIES ─── -->
 <div id="tab-strategies" class="tab">
-  <h1>Strategy Performance</h1>
-  <p class="subtitle">Live performance per strategy from trade log.</p>
-  <div style="overflow-x:auto;">
-    <table id="strategy-table">
-      <thead>
-        <tr>
-          <th>Strategy</th><th>Asset</th><th>Trades</th><th>Win %</th>
-          <th>Net PnL</th><th>Avg PnL</th><th>Max Win</th><th>Max Loss</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
+<h1>Strategy Performance</h1>
+<p class="subtitle">Live performance per strategy from trade log. Toggle on/off with the State column.</p>
+<div style="overflow-x:auto;">
+<table id="strategy-table">
+<thead>
+<tr>
+<th>Strategy</th><th>Asset</th><th>Trades</th><th>Win %</th>
+<th>Net PnL</th><th>Avg PnL</th><th>Max Win</th><th>Max Loss</th><th>State</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
 
-  <div class="section-title">Registered Strategies</div>
-  <p class="section-sub">Strategies loaded from the registry.</p>
-  <table>
-    <thead><tr><th>Strategy</th><th>Asset Class</th><th>Status</th></tr></thead>
-    <tbody id="coming-soon"></tbody>
-  </table>
+<div class="section-title">"Currently Developing" — coming soon</div>
+<p class="section-sub">These strategies are in active development and will appear once implemented.</p>
+<table>
+<thead><tr><th>Strategy</th><th>Asset Class</th><th>Status</th></tr></thead>
+<tbody id="coming-soon"></tbody>
+</table>
 </div>
 
 <!-- ─── TAB: BACKTEST ─── -->
 <div id="tab-backtest" class="tab">
-  <h1>Backtest Lab</h1>
-  <p class="subtitle">Run each strategy on historical MT5 data before live trading.</p>
+<h1>Backtest Lab</h1>
+<p class="subtitle">Run each strategy on historical MT5 data before live trading.</p>
 
-  <div class="flex-row" style="margin-bottom:20px;">
-    <select id="bt-strategy" style="width:280px;">
-      <option value="">Select strategy…</option>
-    </select>
-    <input id="bt-bars" type="number" value="2000" min="500" max="10000" step="500" style="width:100px;" title="Bars to fetch">
-    <button class="primary" onclick="runBacktest()">▶ Run Backtest</button>
-    <button class="ghost" onclick="runAllBacktests()">⇪ Run All Strategies</button>
-  </div>
+<div class="flex-row" style="margin-bottom:14px;">
+<select id="bt-strategy" style="width:260px;">
+<option value="">Select strategy…</option>
+</select>
+<select id="bt-timeframe" style="width:80px;" title="Timeframe">
+<option value="M15">M15</option>
+<option value="H1">H1</option>
+</select>
+<select id="bt-months" style="width:110px;" title="Lookback period">
+<option value="1">1 month</option>
+<option value="3">3 months</option>
+<option value="6" selected>6 months</option>
+<option value="12">12 months</option>
+<option value="24">24 months</option>
+</select>
+<button class="primary" onclick="runBacktest()">▶ Run Backtest</button>
+<button class="ghost" onclick="runAllBacktests()">⇪ Run All Strategies</button>
+</div>
+<p class="section-sub" id="bt-hint" style="margin-top:-10px;margin-bottom:14px;">
+Select a strategy, timeframe, and lookback window. Estimated bars will appear here once a strategy is selected.
+</p>
 
-  <div id="bt-result" class="card" style="display:none; margin-bottom:16px;">
-    <div class="card-grid" id="bt-grid"></div>
-  </div>
-  <div id="bt-table-wrap" style="overflow-x:auto; display:none;">
-    <table id="bt-table">
-      <thead>
-        <tr>
-          <th>Strategy</th><th>Symbol</th><th>TF</th><th>Trades</th>
-          <th>Win Rate</th><th>Net PnL</th><th>Sharpe</th><th>Profit Factor</th><th>Max DD</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-  </div>
-  <p class="section-sub">
-    <strong>Tip:</strong> Results show which TF/asset combo is most profitable.
-    Higher Sharpe (&gt;1) + positive profit factor + low max DD = better.
-    Run all, compare, then enable only the top performers.
-  </p>
+<div id="bt-result" class="card" style="display:none; margin-bottom:16px;">
+<div class="card-grid" id="bt-grid"></div>
+</div>
+<div id="bt-table-wrap" style="overflow-x:auto; display:none;">
+<table id="bt-table">
+<thead>
+<tr>
+<th>Strategy</th><th>Symbol</th><th>TF</th><th>Trades</th>
+<th>Win Rate</th><th>Net PnL</th><th>Sharpe</th><th>Profit Factor</th><th>Max DD</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+<p class="section-sub">
+<strong>Tip:</strong> Results show which TF/asset combo is most profitable.
+Higher Sharpe (>1) + positive profit factor + low max DD = better.
+Run all, compare, then enable only the top performers.
+</p>
 </div>
 
 <!-- ─── TAB: TRANSCRIPTS ─── -->
 <div id="tab-transcripts" class="tab">
-  <h1>Strategy Transcript Library</h1>
-  <p class="subtitle">Upload YouTube strategy transcripts or trading notes. AI can extract strategies from them later.</p>
+<h1>Strategy Transcript Library</h1>
+<p class="subtitle">Upload YouTube strategy transcripts or trading notes. AI can extract strategies from them later.</p>
 
-  <label class="upload-zone" for="transcript-file">
-    <div style="font-size:2rem;">📎</div>
-    <div style="color:#7d829a;margin-top:8px;">Click or drag to upload transcript</div>
-    <div style="color:#555a6e;font-size:.78rem;">.txt, .pdf, .md — up to 10MB</div>
-    <input type="file" id="transcript-file" accept=".txt,.pdf,.md,.csv,.json"
-      onchange="uploadTranscript(this.files[0])">
-  </label>
+<label class="upload-zone" for="transcript-file">
+<div style="font-size:2rem;">📎</div>
+<div style="color:#7d829a;margin-top:8px;">Click or drag to upload transcript</div>
+<div style="color:#555a6e;font-size:.78rem;">.txt, .pdf, .md — up to 10MB</div>
+<input type="file" id="transcript-file" accept=".txt,.pdf,.md,.csv,.json" onchange="uploadTranscript(this.files[0])">
+</label>
 
-  <div id="upload-progress" style="margin-bottom:12px;color:#00d4aa;font-size:.85rem;"></div>
+<div id="upload-progress" style="margin-bottom:12px;color:#00d4aa;font-size:.85rem;"></div>
 
-  <div class="section-title">Uploaded Transcripts</div>
-  <div style="overflow-x:auto;">
-    <table id="transcript-table">
-      <thead><tr><th>Filename</th><th>Size</th><th>Uploaded</th><th>Actions</th></tr></thead>
-      <tbody></tbody>
-    </table>
-  </div>
+<div class="section-title">Uploaded Transcripts</div>
+<div style="overflow-x:auto;">
+<table id="transcript-table">
+<thead><tr><th>Filename</th><th>Size</th><th>Uploaded</th><th>Actions</th></tr></thead>
+<tbody></tbody>
+</table>
+</div>
 </div>
 
 <!-- ─── TAB: SETTINGS ─── -->
 <div id="tab-settings" class="tab">
-  <h1>Settings</h1>
-  <p class="subtitle">MT5 credentials, risk parameters, scheduler. All values editable live.</p>
+<h1>Settings</h1>
+<p class="subtitle">MT5 credentials, risk parameters, scheduler. All values editable live.</p>
 
-  <div class="section-title">MT5 Connection</div>
-  <div class="config-grid" style="margin-bottom:24px;">
-    <div class="config-item">
-      <label>MT5 Login (Account #)</label>
-      <input type="number" id="cfg-login" placeholder="e.g. 12345678">
-    </div>
-    <div class="config-item">
-      <label>Password</label>
-      <input type="password" id="cfg-password" placeholder="MT5 password">
-    </div>
-    <div class="config-item">
-      <label>Server</label>
-      <input type="text" id="cfg-server" placeholder="e.g. JustMarkets-Live">
-    </div>
-  </div>
+<div class="section-title">MT5 Connection</div>
+<div class="config-grid" style="margin-bottom:24px;">
+<div class="config-item">
+<label>MT5 Login (Account #)</label>
+<input type="number" id="cfg-login" placeholder="e.g. 12345678">
+</div>
+<div class="config-item">
+<label>Password</label>
+<input type="password" id="cfg-password" placeholder="MT5 password">
+</div>
+<div class="config-item">
+<label>Server</label>
+<input type="text" id="cfg-server" placeholder="e.g. JustMarkets-Demo">
+</div>
+</div>
 
-  <div class="section-title">Risk Parameters (editable live)</div>
-  <div class="config-grid" id="risk-config-grid">
-    <!-- populated by JS -->
-  </div>
-  <button class="primary" style="margin-top:16px;" onclick="saveRiskConfig()">💾 Save Risk Config</button>
+<div class="section-title">Risk Parameters (editable live)</div>
+<div class="config-grid" id="risk-config-grid">
+<!-- populated by JS -->
+</div>
+<button class="primary" style="margin-top:16px;" onclick="saveRiskConfig()">💾 Save Risk Config</button>
 
-  <div class="section-title">MT5 Terminal Path (VPS-ready)</div>
-  <p class="section-sub">When you move to a VPS, point to the MT5 terminal64.exe on that machine.</p>
-  <div class="flex-row">
-    <input type="text" id="cfg-mt5-path" placeholder="C:\\Program Files\\JustMarkets MetaTrader 5\\terminal64.exe"
-      style="flex:1;">
-  </div>
+<div class="section-title">MT5 Terminal Path (VPS-ready)</div>
+<p class="section-sub">When you move to a VPS, point to the MT5 terminal64.exe on that machine.</p>
+<div class="flex-row">
+<input type="text" id="cfg-mt5-path" placeholder="C:\Program Files\MetaTrader 5\terminal64.exe" style="flex:1;">
+</div>
 
-  <div class="section-title">Scheduler</div>
-  <div class="config-grid">
-    <div class="config-item">
-      <label>Mode</label>
-      <select id="cfg-mode">
-        <option value="continuous">Continuous (every N seconds)</option>
-        <option value="session_aware">Session-Aware (London/NY only)</option>
-      </select>
-    </div>
-    <div class="config-item">
-      <label>Poll Interval (seconds)</label>
-      <input type="number" id="cfg-interval" value="60" min="10" max="3600">
-    </div>
-  </div>
-  <button class="primary" style="margin-top:12px;" onclick="saveScheduler()">💾 Save Scheduler</button>
+<div class="section-title">Scheduler</div>
+<div class="config-grid">
+<div class="config-item">
+<label>Mode</label>
+<select id="cfg-mode">
+<option value="continuous">Continuous (every N seconds)</option>
+<option value="session_aware">Session-Aware (London/NY only)</option>
+</select>
+</div>
+<div class="config-item">
+<label>Poll Interval (seconds)</label>
+<input type="number" id="cfg-interval" value="60" min="10" max="3600">
+</div>
+</div>
+<button class="primary" style="margin-top:12px;" onclick="saveScheduler()">💾 Save Scheduler</button>
 </div>
 
 </div><!-- /main -->
@@ -489,376 +334,492 @@ const API = '';
 
 // ── Tab switching ──────────────────────────
 document.querySelectorAll('.sidebar button[data-tab]').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
-    document.getElementById(btn.dataset.tab).classList.add('active');
-    btn.classList.add('active');
-    if (btn.dataset.tab === 'tab-charts') loadCharts();
-    if (btn.dataset.tab === 'tab-strategies') loadStrategyPerf();
-    if (btn.dataset.tab === 'tab-backtest') populateBacktestSelect();
-    if (btn.dataset.tab === 'tab-transcripts') loadTranscripts();
-    if (btn.dataset.tab === 'tab-settings') loadSettings();
-  });
+btn.addEventListener('click', () => {
+document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+document.querySelectorAll('.sidebar button').forEach(b => b.classList.remove('active'));
+document.getElementById(btn.dataset.tab).classList.add('active');
+btn.classList.add('active');
+if (btn.dataset.tab === 'tab-charts') loadCharts();
+if (btn.dataset.tab === 'tab-strategies') loadStrategyPerf();
+if (btn.dataset.tab === 'tab-backtest') populateBacktestSelect();
+if (btn.dataset.tab === 'tab-transcripts') loadTranscripts();
+if (btn.dataset.tab === 'tab-settings') loadSettings();
+});
 });
 
 // ── Engine controls ────────────────────────
 document.getElementById('btn-start').addEventListener('click', async () => {
-  const login = document.getElementById('cfg-login')?.value || '';
-  const password = document.getElementById('cfg-password')?.value || '';
-  const server = document.getElementById('cfg-server')?.value || '';
-  const mode = document.getElementById('cfg-mode')?.value || 'continuous';
-  const interval = parseInt(document.getElementById('cfg-interval')?.value || '60');
-  const body = { login: +login, password, server, mode, interval };
-  const r = await fetch(`${API}/api/engine/start`, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(body)
-  });
-  const d = await r.json();
-  if (d.ok) toast('Engine started ✓', 'green'); else toast(d.error, 'red');
-  refreshStatus();
+const login = document.getElementById('cfg-login')?.value || '';
+const password = document.getElementById('cfg-password')?.value || '';
+const server = document.getElementById('cfg-server')?.value || '';
+const mode = document.getElementById('cfg-mode')?.value || 'continuous';
+const interval = parseInt(document.getElementById('cfg-interval')?.value || '60');
+const body = { login: +login, password, server, mode, interval };
+const r = await fetch(`${API}/api/engine/start`, {
+method: 'POST',
+headers: {'Content-Type':'application/json'},
+body: JSON.stringify(body)
+});
+const d = await r.json();
+if (d.ok) toast('Engine started ✓', 'green'); else toast(d.error, 'red');
+refreshStatus();
 });
 
 document.getElementById('btn-stop').addEventListener('click', async () => {
-  const r = await fetch(`${API}/api/engine/stop`, {method:'POST'});
-  const d = await r.json();
-  if (d.ok) toast('Engine stopped', 'orange'); else toast(d.error, 'red');
-  refreshStatus();
+const r = await fetch(`${API}/api/engine/stop`, {method:'POST'});
+const d = await r.json();
+if (d.ok) toast('Engine stopped', 'orange'); else toast(d.error, 'red');
+refreshStatus();
 });
 
 document.getElementById('btn-cycle').addEventListener('click', async () => {
-  const r = await fetch(`${API}/api/trigger-cycle`, {method:'POST'});
-  const d = await r.json();
-  toast(d.msg || d.error, d.ok ? 'green' : 'red');
+const r = await fetch(`${API}/api/trigger-cycle`, {method:'POST'});
+const d = await r.json();
+toast(d.msg || d.error, d.ok ? 'green' : 'red');
 });
 
 // ── Status ─────────────────────────────────
 async function refreshStatus() {
-  const r = await fetch(`${API}/api/status`);
-  const d = await r.json();
-  const badge = document.getElementById('status-badge');
-  badge.textContent = d.engine_running ? '● Live' : '◉ Disconnected';
-  badge.className = 'badge ' + (d.engine_running ? 'connected' : 'disconnected');
-  document.getElementById('mode-badge').textContent = d.mode + ' mode';
-  loadOpenPositions();
-  loadTrades();
-  loadStats();
-  loadEquity();
-}
-
-// ─── Open Positions (live from MT5) ────────
-async function loadOpenPositions() {
-  try {
-    const r = await fetch(`${API}/api/open-positions`);
-    const positions = await r.json();
-    const count = Array.isArray(positions) ? positions.length : 0;
-    const badge = document.getElementById('open-count');
-    badge.textContent = count + ' open trade' + (count !== 1 ? 's' : '');
-    badge.style.display = count > 0 ? 'inline-block' : 'none';
-    const op = document.getElementById('s-open');
-    if (op) op.textContent = count;
-  } catch (e) {
-    document.getElementById('open-count').style.display = 'none';
-  }
+const r = await fetch(`${API}/api/status`);
+const d = await r.json();
+const badge = document.getElementById('status-badge');
+badge.textContent = d.engine_running ? '● Live' : '◉ Disconnected';
+badge.className = 'badge ' + (d.engine_running ? 'connected' : 'disconnected');
+document.getElementById('mode-badge').textContent = d.mode + ' mode';
+const oc = document.getElementById('open-count');
+oc.style.display = 'inline-block';
+oc.textContent = 'open trades: ' + d.total_trades;
+loadTrades();
+loadStats();
 }
 
 // ─── Trades table ──────────────────────────
 async function loadTrades() {
-  const r = await fetch(`${API}/api/trades?limit=200`);
-  const rows = await r.json();
-  const tb = document.querySelector('#trades-table tbody');
-  tb.innerHTML = rows.reverse().map(t => `<tr>
-    <td>${t.timestamp_open ? fmtTime(t.timestamp_open) : ''}</td>
-    <td>${t.strategy||''}</td>
-    <td><b>${t.symbol||''}</b></td>
-    <td>${t.timeframe||''}</td>
-    <td><b class="${t.side==='BUY'?'win':'loss'}">${t.side||''}</b></td>
-    <td>${fmt(t.entry_price)}</td><td>${fmt(t.exit_price)}</td>
-    <td>${fmt(t.sl)}</td><td>${fmt(t.tp)}</td>
-    <td class="${(+t.pnl_usd||0)>0?'win':'loss'}">${fmt(t.pnl_usd)}</td>
-    <td style="color:#7d829a;font-size:.78rem;">${t.notes||''}</td>
-  </tr>`).join('');
+const r = await fetch(`${API}/api/trades?limit=25`);
+const rows = await r.json();
+const tb = document.querySelector('#trades-table tbody');
+tb.innerHTML = rows.reverse().map(t => `<tr>
+<td>${t.timestamp_open ? fmtTime(t.timestamp_open) : ''}</td>
+<td>${t.strategy||''}</td>
+<td><b>${t.symbol||''}</b></td>
+<td>${t.timeframe||''}</td>
+<td><b class="${t.side==='BUY'?'win':'loss'}">${t.side||''}</b></td>
+<td>${fmt(t.entry_price)}</td><td>${fmt(t.exit_price)}</td>
+<td>${fmt(t.sl)}</td><td>${fmt(t.tp)}</td>
+<td class="${num(t.pnl_usd)>0?'win':'loss'}">${fmt(t.pnl_usd)}</td>
+<td style="color:#7d829a;font-size:.78rem;">${t.notes||''}</td>
+</tr>`).join('');
 }
 
 // Format helpers
-function fmt(v) {
-  if (v === '' || v == null) return '—';
-  const n = +v;
-  return isNaN(n) ? '—' : n.toFixed(2);
-}
+function fmt(v) { return v === '' || v == null ? '—' : +v; }
 function fmtTime(t) { return t ? new Date(t).toLocaleString() : ''; }
+function num(v) { return parseFloat(v) || 0; }
 
 // ─── Stats cards ───────────────────────────
 async function loadStats() {
-  try {
-    const r = await fetch(`${API}/api/stats`);
-    const d = await r.json();
-    const $ = id => document.getElementById(id);
-    const bal = d.current_balance != null ? d.current_balance : (d.max_balance || 0);
-    const maxB = d.max_balance || bal;
-    const ddAmt = maxB - bal;
-    const ddPct = maxB > 0 ? (ddAmt / maxB * 100) : 0;
-    $('s-total').textContent = d.total_trades;
-    $('s-wr').textContent = (d.win_rate || 0) + '%';
-    const pnl = d.net_pnl || 0;
-    $('s-pnl').textContent = (pnl >= 0 ? '+' : '') + '$' + pnl.toFixed(2);
-    $('s-pnl').className = 'value ' + (pnl >= 0 ? 'green' : 'red');
-    $('s-bal').textContent = '$' + bal.toLocaleString();
-    const ddEl = $('s-dd');
-    if (ddEl) {
-      ddEl.textContent = '-$' + ddAmt.toFixed(2);
-      ddEl.className = 'value ' + (ddPct > 3 ? 'red' : ddPct > 1 ? 'orange' : 'green');
-      $('s-dd-pct').textContent = ddPct.toFixed(2) + '% from peak';
-    }
-  } catch (e) { console.error('loadStats', e); }
+const r = await fetch(`${API}/api/stats`);
+const d = await r.json();
+const $ = id => document.getElementById(id);
+$('s-total').textContent = d.total_trades;
+$('s-wr').textContent = d.win_rate + '%';
+$('s-pnl').textContent = (d.net_pnl >= 0 ? '+' : '') + '$' + d.net_pnl;
+$('s-pnl').className = 'value ' + (d.net_pnl >= 0 ? 'green' : 'red');
+$('s-bal').textContent = '$' + d.max_balance.toLocaleString();
+$('s-wl').textContent = `${d.winning_trades}W / ${d.losing_trades}L`;
+$('s-avg').textContent = `+${d.avg_win} / ${d.avg_loss}`;
 }
 
 // ─── Equity chart ──────────────────────────
 async function loadEquity() {
-  try {
-    const r = await fetch(`${API}/api/equity-curve`);
-    const d = await r.json();
-    if (!d.balance || !d.balance.length) return;
-    const trace = {
-      x: d.timestamps, y: d.equity, type: 'scatter', mode: 'lines',
-      name: 'Equity', line: {color: '#00d4aa', width: 2}
-    };
-    const t2 = {
-      x: d.timestamps, y: d.balance, type: 'scatter', mode: 'lines',
-      name: 'Balance', line: {color: '#5aa8ff', width: 1, dash: 'dot'}
-    };
-    Plotly.newPlot('equity-chart', [t2, trace], {
-      paper_bgcolor: '#1a1d2b', plot_bgcolor: '#1a1d2b',
-      font: {color:'#c0c4d0', size:11},
-      xaxis: {gridcolor:'#2a2d3a', color:'#7d829a'},
-      yaxis: {gridcolor:'#2a2d3a', color:'#7d829a', title:'$'},
-      margin: {l:50,r:10,t:10,b:30},
-      showlegend: true,
-      legend: {x:0, y:1, bgcolor:'transparent'}
-    }, {responsive:true, displayModeBar:false});
-  } catch (e) { console.error('loadEquity', e); }
+const r = await fetch(`${API}/api/equity-curve`);
+const d = await r.json();
+const trace = {
+x: d.timestamps, y: d.equity, type: 'scatter', mode: 'lines',
+name: 'Equity', line: {color: '#00d4aa', width: 2},
+};
+if (d.balance.length) {
+trace2 = {
+x: d.timestamps, y: d.balance, type: 'scatter', mode: 'lines',
+name: 'Balance', line: {color: '#5aa8ff', width: 1, dash: 'dot'},
+};
+Plotly.newPlot('equity-chart', [trace2, trace], {
+paper_bgcolor: '#1a1d2b', plot_bgcolor: '#1a1d2b',
+font: {color:'#c0c4d0', size:11},
+xaxis: {gridcolor:'#2a2d3a', color:'#7d829a'},
+yaxis: {gridcolor:'#2a2d3a', color:'#7d829a', title:'$'},
+margin: {l:50,r:10,t:10,b:30},
+showlegend: true, legend: {x:0, y:1, bgcolor:'transparent'},
+}, {responsive:true, displayModeBar:false});
+} else {
+Plotly.newPlot('equity-chart', [trace], {
+paper_bgcolor: '#1a1d2b', plot_bgcolor: '#1a1d2b',
+font: {color:'#c0c4d0', size:11},
+xaxis: {gridcolor:'#2a2d3a', color:'#7d829a'},
+yaxis: {gridcolor:'#2a2d3a', color:'#7d829a', title:'$'},
+margin: {l:50,r:10,t:10,b:30},
+showlegend: true, legend: {x:0, y:1, bgcolor:'transparent'},
+}, {responsive:true, displayModeBar:false});
+}
 }
 
 // ─── Charts tab ────────────────────────────
-async function loadCharts() {
-  const stratR = await fetch(`${API}/api/strategy-performance`);
-  const strats = await stratR.json();
-  if (strats.length) {
-    Plotly.newPlot('chart-strategy',
-      [{x: strats.map(s=>s.strategy), y: strats.map(s=>s.net_pnl), type:'bar',
-        marker:{color: strats.map(s=>s.net_pnl>=0?'#00d4aa':'#ff5a5a')}}],
-      {paper_bgcolor:'#1a1d2b', plot_bgcolor:'#1a1d2b', font:{color:'#c0c4d0',size:11},
-       xaxis:{gridcolor:'#2a2d3a',color:'#7d829a'},
-       yaxis:{gridcolor:'#2a2d3a',color:'#7d829a',title:'Net PnL $'},
-       margin:{l:50,r:10,t:20,b:80},
-       title:'Net PnL by Strategy'},
-      {responsive:true, displayModeBar:false});
-  }
-  const weekR = await fetch(`${API}/api/weekly-performance`);
-  const weeks = await weekR.json();
-  if (weeks.weeks && weeks.weeks.length) {
-    Plotly.newPlot('chart-weekly',
-      [{x: weeks.weeks, y: weeks.pnl, type:'bar',
-        marker:{color: weeks.pnl.map(v=>v>=0?'#00d4aa':'#ff5a5a')}}],
-      {paper_bgcolor:'#1a1d2b', plot_bgcolor:'#1a1d2b', font:{color:'#c0c4d0',size:11},
-       xaxis:{gridcolor:'#2a2d3a',color:'#7d829a'},
-       yaxis:{gridcolor:'#2a2d3a',color:'#7d829a',title:'Weekly PnL $'},
-       margin:{l:50,r:10,t:20,b:80},
-       title:'Weekly PnL'},
-      {responsive:true, displayModeBar:false});
-  }
+// TASK 13 — strategy-aware: accepts optional strategy filter; shows
+// a zero-trade placeholder message when the filtered strategy has no data.
+
+async function loadCharts(strategyFilter) {
+strategyFilter = strategyFilter || '';
+const qs = strategyFilter ? `?strategy=${encodeURIComponent(strategyFilter)}` : '';
+const [stratR, weekR, stratsListR] = await Promise.all([
+fetch(`${API}/api/strategy-performance${qs}`),
+fetch(`${API}/api/weekly-performance`),
+fetch(`${API}/api/strategies`)
+]);
+const strats = await stratR.json();
+const weeks = await weekR.json();
+const stratsList = await stratsListR.json();
+
+// ── Strategy selector (populate once, wire once) ──
+const sel = document.getElementById('chart-strategy-filter');
+if (sel && sel.options.length <= 1) {
+stratsList.forEach(s => {
+const opt = document.createElement('option');
+opt.value = s.name; opt.textContent = s.name;
+sel.appendChild(opt);
+});
+sel.addEventListener('change', () => loadCharts(sel.value));
+}
+
+// ── Zero-trade guard ──
+const hasTrades = strats.some(s => (s.trades || 0) > 0);
+const zeroMsg = document.getElementById('chart-zero-trade-msg');
+if (zeroMsg) zeroMsg.style.display = (!strategyFilter || !hasTrades) ? 'none' : 'none';
+if (strategyFilter && !hasTrades && zeroMsg) {
+zeroMsg.style.display = 'block';
+Plotly.newPlot('chart-strategy', [], {
+paper_bgcolor:'#1a1d2b', plot_bgcolor:'#1a1d2b',
+font:{color:'#7d829a',size:12},
+xaxis:{visible:false}, yaxis:{visible:false},
+margin:{l:20,r:20,t:20,b:20},
+}, {responsive:true, displayModeBar:false});
+} else if (strats.length) {
+Plotly.newPlot('chart-strategy', [{
+x: strats.map(s=>s.strategy), y: strats.map(s=>s.net_pnl), type:'bar',
+marker:{color: strats.map(s=>s.net_pnl>=0?'#00d4aa':'#ff5a5a')}
+}], {
+paper_bgcolor:'#1a1d2b', plot_bgcolor:'#1a1d2b',
+font:{color:'#c0c4d0',size:11},
+xaxis:{gridcolor:'#2a2d3a',color:'#7d829a'},
+yaxis:{gridcolor:'#2a2d3a',color:'#7d829a',title:'Net PnL $'},
+margin:{l:50,r:10,t:20,b:80}, title:'Net PnL by Strategy'
+}, {responsive:true, displayModeBar:false});
+}
+
+// Weekly chart (always all strategies — unaffected by filter)
+if (weeks.weeks && weeks.weeks.length) {
+Plotly.newPlot('chart-weekly', [{
+x: weeks.weeks, y: weeks.pnl, type:'bar',
+marker:{color: weeks.pnl.map(v=>v>=0?'#00d4aa':'#ff5a5a')}
+}], {
+paper_bgcolor:'#1a1d2b', plot_bgcolor:'#1a1d2b',
+font:{color:'#c0c4d0',size:11},
+xaxis:{gridcolor:'#2a2d3a',color:'#7d829a'},
+yaxis:{gridcolor:'#2a2d3a',color:'#7d829a',title:'Weekly PnL $'},
+margin:{l:50,r:10,t:20,b:80}, title:'Weekly PnL'
+}, {responsive:true, displayModeBar:false});
+}
 }
 
 // ─── Strategy performance table ────────────
-async function loadStrategyPerf() {
-  // Performance table (from trade log)
-  const r = await fetch(`${API}/api/strategy-performance`);
-  const rows = await r.json();
-  const tb = document.querySelector('#strategy-table tbody');
-  tb.innerHTML = rows.map(s => `<tr>
-    <td><b>${s.strategy}</b></td>—</td>
-    <td>${s.trades}</td>
-    <td><b class="${s.win_rate>=50?'win':'loss'}">${s.win_rate}%</b></td>
-    <td class="${s.net_pnl>=0?'win':'loss'}">${s.net_pnl>=0?'+':''}${fmt(s.net_pnl)}</td>
-    <td>${fmt(s.avg_pnl)}</td><td class="win">+${fmt(s.max_win)}</td><td class="loss">${fmt(s.max_loss)}</td>
-  </tr>`).join('');
+// TASK 10: cache strategy-stats rows and enabled map; toggle button sends
+// the OPPOSITE state to create a flip, then re-renders the table only.
+let _stratRows = [];
+let _stratEnabled = {};
 
-  // Strategy list — live from registry, all Active
-  try {
-    const sr = await fetch(`${API}/api/strategies`);
-    const strats = await sr.json();
-    document.getElementById('coming-soon').innerHTML = strats.map(st =>
-      `<tr><td>${st.name}</td><td>${st.asset_class}</td><td><span class="badge live">Active</span></td></tr>`
-    ).join('');
-  } catch (e) {
-    // fallback: static list of the 8 real strategies
-    const names = [
-      ["London Breakout", "Gold"],
-      ["Fib Retracement", "Gold"],
-      ["MA Cross Ribbon", "Gold/Silver"],
-      ["Forex EMA Cross", "Forex"],
-      ["Forex S/R Breakout", "Forex"],
-      ["Crypto Trend Following", "Crypto"],
-      ["RSI Reversal", "Crypto"],
-      ["Stock Breakout", "Stocks"]
-    ];
-    document.getElementById('coming-soon').innerHTML = names.map(([n,a]) =>
-      `<tr><td>${n}</td><td>${a}</td><td><span class="badge live">Active</span></td></tr>`
-    ).join('');
-  }
+async function loadStrategyPerf() {
+const [perfR, stratsR] = await Promise.all([
+fetch(`${API}/api/strategy-performance`),
+fetch(`${API}/api/strategies`)
+]);
+const perfRows = await perfR.json();
+const strats = await stratsR.json();
+
+_stratRows = perfRows;
+_stratEnabled = {};
+strats.forEach(s => { _stratEnabled[s.name] = s.enabled; });
+
+const tb = document.querySelector('#strategy-table tbody');
+tb.innerHTML = _stratRows.map(s => {
+const on = _stratEnabled[s.strategy] !== false;
+const btnLabel = on ? '● On' : '○ Off';
+const btnCls = on ? 'toggle-btn on' : 'toggle-btn disabled';
+const zero = s.trades === 0;
+const tradesCell = zero
+? '<span style="color:#7d829a;">0</span>'
+: s.trades;
+const wrCell = zero
+? '<span style="color:#7d829a;">—</span>'
+: `<b class="${s.win_rate>=50?'win':'loss'}">${s.win_rate}%</b>`;
+const pnlCell = zero
+? '<span style="color:#7d829a;">—</span>'
+: `<td class="${s.net_pnl>=0?'win':'loss'}">${s.net_pnl>=0?'+':''}${fmt(s.net_pnl)}</td>`;
+return `<tr>
+<td><b>${s.strategy}</b></td><td>${s.asset_class||'—'}</td>
+<td>${tradesCell}</td><td>${wrCell}</td>
+<td class="${s.net_pnl>=0?'win':'loss'}">${s.net_pnl>=0?'+':''}${fmt(s.net_pnl)}</td>
+<td>${zero ? '<span style="color:#7d829a;">—</span>' : fmt(s.avg_pnl)}</td>
+<td class="win">${zero ? '<span style="color:#7d829a;">—</span>' : '+'+fmt(s.max_win)}</td>
+<td class="loss">${zero ? '<span style="color:#7d829a;">—</span>' : fmt(s.max_loss)}</td>
+<td><button class="${btnCls}" data-strategy="${s.strategy}">${btnLabel}</button></td>
+</tr>`;
+}).join('');
+
+// Wire toggle buttons — send the OPPOSITE state to flip it
+tb.querySelectorAll('.toggle-btn').forEach(btn => {
+btn.addEventListener('click', async () => {
+const name = btn.dataset.strategy;
+const currentlyOn = btn.classList.contains('on');
+const desired = !currentlyOn; // flip
+await toggleStrategy(name, desired);
+});
+});
+
+// Coming soon list
+const coming = [
+["ICT Silver Bullet (Gold)", "Gold"],
+["Wyckoff S/R Breakout (Forex)", "Forex"],
+["EMA Ribbon (Gold/Silver)", "Gold/Silver"],
+["Supply/Demand Zones (Gold)", "Gold"],
+["MACD Divergence (Crypto)", "Crypto"],
+["Bollinger Squeeze (Crypto)", "Crypto"],
+];
+document.getElementById('coming-soon').innerHTML = coming.map(([n,a]) =>
+`<tr><td>${n}</td><td>${a}</td><td><span class="badge live">Developing</span></td></tr>`
+).join('');
+}
+
+async function toggleStrategy(name, enabled) {
+try {
+const r = await fetch(`${API}/api/strategies/${encodeURIComponent(name)}/toggle`, {
+method: 'POST',
+headers: {'Content-Type':'application/json'},
+body: JSON.stringify({enabled})
+});
+const d = await r.json();
+if (d.ok) {
+_stratEnabled[name] = d.enabled;
+renderStrategyTable();
+toast(`${name}: ${d.enabled ? 'enabled' : 'disabled'}`, 'green');
+} else {
+toast(d.error || 'Toggle failed', 'red');
+}
+} catch (e) {
+toast('Toggle request failed', 'red');
+}
+}
+
+function renderStrategyTable() {
+const tb = document.querySelector('#strategy-table tbody');
+if (!tb || !_stratRows.length) { loadStrategyPerf(); return; }
+tb.innerHTML = _stratRows.map(s => {
+const on = _stratEnabled[s.strategy] !== false;
+const btnLabel = on ? '● On' : '○ Off';
+const btnCls = on ? 'toggle-btn on' : 'toggle-btn disabled';
+const zero = s.trades === 0;
+const tradesCell = zero ? '<span style="color:#7d829a;">0</span>' : s.trades;
+const wrCell = zero ? '<span style="color:#7d829a;">—</span>' : `<b class="${s.win_rate>=50?'win':'loss'}">${s.win_rate}%</b>`;
+return `<tr>
+<td><b>${s.strategy}</b></td><td>${s.asset_class||'—'}</td>
+<td>${tradesCell}</td><td>${wrCell}</td>
+<td class="${s.net_pnl>=0?'win':'loss'}">${s.net_pnl>=0?'+':''}${fmt(s.net_pnl)}</td>
+<td>${zero ? '<span style="color:#7d829a;">—</span>' : fmt(s.avg_pnl)}</td>
+<td class="win">${zero ? '<span style="color:#7d829a;">—</span>' : '+'+fmt(s.max_win)}</td>
+<td class="loss">${zero ? '<span style="color:#7d829a;">—</span>' : fmt(s.max_loss)}</td>
+<td><button class="${btnCls}" data-strategy="${s.strategy}">${btnLabel}</button></td>
+</tr>`;
+}).join('');
+tb.querySelectorAll('.toggle-btn').forEach(btn => {
+btn.addEventListener('click', async () => {
+const name = btn.dataset.strategy;
+const currentlyOn = btn.classList.contains('on');
+await toggleStrategy(name, !currentlyOn);
+});
+});
 }
 
 // ─── Backtest ──────────────────────────────
-async function populateBacktestSelect() {
-  const sel = document.getElementById('bt-strategy');
-  if (sel.options.length > 1) return; // already populated
-  try {
-    const r = await fetch(`${API}/api/strategies`);
-    const strats = await r.json();
-    strats.forEach(st => {
-      const opt = document.createElement('option');
-      opt.value = st.name;
-      opt.textContent = st.name + (st.symbol ? ' (' + st.symbol + ')' : '');
-      sel.appendChild(opt);
-    });
-  } catch {
-    ["London Breakout (Gold)", "Fib Retracement (Gold)", "MA Cross Ribbon (Gold/Silver)",
-     "Forex EMA Cross", "Forex S/R Breakout",
-     "Crypto Trend Following", "RSI Reversal (Crypto)", "Stock Breakout (AAPL/tech)"]
-    .forEach(n => {
-      const opt = document.createElement('option');
-      opt.value = n; opt.textContent = n;
-      sel.appendChild(opt);
-    });
-  }
+
+// TASK 12 — new: update bar-count hint when user changes TF/months/strategy
+function updateBtHint() {
+const name = document.getElementById("bt-strategy").value;
+const months = document.getElementById("bt-months")?.value || "6";
+const tf = document.getElementById("bt-timeframe")?.value || "H1";
+const hint = document.getElementById("bt-hint");
+if (!hint) return;
+if (!name) {
+hint.textContent = "Select a strategy, timeframe, and lookback. Estimated bars will" +
+" appear here once a strategy is selected.";
+return;
+}
+const ppm = {"M1":43200,"M5":8640,"M15":2880,"M30":1440,"H1":720,"H4":180,"D1":22};
+const est = (ppm[tf] || 720) * (+months);
+hint.textContent = name + " | " + tf + " | ~" + est.toLocaleString() +
+" bars (" + months + " month" + (months > 1 ? "s" : "")  + ")";
 }
 
+async function populateBacktestSelect() {
+try {
+const r = await fetch(`${API}/api/status`);
+const names = [
+"London Breakout (Gold)", "Fib Retracement (Gold)",
+"MA Cross Ribbon (Gold/Silver)", "Forex EMA Cross",
+"Forex S/R Breakout", "Crypto Trend Following",
+"RSI Reversal (Crypto)", "Stock Breakout (AAPL/tech)",
+];
+const sel = document.getElementById('bt-strategy');
+if (sel.options.length > 1) return;
+names.forEach(n => {
+const opt = document.createElement('option');
+opt.value = n; opt.textContent = n;
+sel.appendChild(opt);
+});
+} catch (e) {
+// fallback: hardcoded names already above
+}
+// Update hint when user picks a strategy
+const sel = document.getElementById('bt-strategy');
+if (sel) { sel.addEventListener('change', updateBtHint); }
+updateBtHint();
+}
+
+// TASK 12 — updated: uses months_back + timeframe instead of raw bars
 async function runBacktest() {
-  const name = document.getElementById('bt-strategy').value;
-  const bars = document.getElementById('bt-bars').value;
-  if (!name) { toast('Select a strategy first', 'orange'); return; }
-  toast('Running backtest — this may take a moment…', 'blue');
-  const r = await fetch(`${API}/api/backtest`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({strategy:name, bars:+bars})
-  });
-  const d = await r.json();
-  if (d.ok) showBtResult([d]); else toast(d.error, 'red');
+const name = document.getElementById('bt-strategy').value;
+const months = document.getElementById('bt-months').value;
+const tf = document.getElementById('bt-timeframe').value;
+if (!name) { toast('Select a strategy first', 'orange'); return; }
+updateBtHint();
+toast('Running backtest — this may take a moment…', 'blue');
+const r = await fetch(`${API}/api/backtest`, {
+method:'POST',
+headers:{'Content-Type':'application/json'},
+body: JSON.stringify({strategy:name, months_back:+months, timeframe:tf})
+});
+const d = await r.json();
+if (d.ok) showBtResult([d]); else toast(d.error, 'red');
 }
 
 async function runAllBacktests() {
-  toast('Running full backtest suite… this takes 1–3 minutes.', 'blue');
-  const r = await fetch(`${API}/api/backtest-all`, {method:'POST'});
-  const d = await r.json();
-  if (d.ok) showBtResult(d.results); else toast(d.error, 'red');
+toast('Running full backtest suite… this takes 1–3 minutes.', 'blue');
+const r = await fetch(`${API}/api/backtest-all`, {method:'POST'});
+const d = await r.json();
+if (d.ok) showBtResult(d.results); else toast(d.error, 'red');
 }
 
 function showBtResult(results) {
-  const wrap = document.getElementById('bt-table-wrap');
-  wrap.style.display = 'block';
-  document.getElementById('bt-table').querySelector('tbody').innerHTML = results.map(r => `<tr>
-    <td><b>${r.strategy}</b></td><td>${r.symbol}</td><td>${r.timeframe}</td>
-    <td>${r.total_trades}</td>
-    <td><b class="${r.win_rate>=50?'win':'loss'}">${r.win_rate}%</b></td>
-    <td class="${r.net_pnl>=0?'win':'loss'}">${r.net_pnl>=0?'+':''}${fmt(r.net_pnl)}</td>
-    <td>${r.sharpe}</td><td>${r.profit_factor}</td><td>${r.max_drawdown_pct}%</td>
-  </tr>`).join('');
-  toast(`Backtest complete — ${results.length} result(s)`, 'green');
+const wrap = document.getElementById('bt-table-wrap');
+wrap.style.display = 'block';
+document.getElementById('bt-table').querySelector('tbody').innerHTML =
+results.map(r => `<tr>
+<td><b>${r.strategy}</b></td><td>${r.symbol}</td><td>${r.timeframe}</td>
+<td>${r.total_trades}</td>
+<td><b class="${r.win_rate>=50?'win':'loss'}">${r.win_rate}%</b></td>
+<td class="${r.net_pnl>=0?'win':'loss'}">${r.net_pnl>=0?'+':''}${fmt(r.net_pnl)}</td>
+<td>${r.sharpe}</td><td>${r.profit_factor}</td><td>${r.max_drawdown_pct}%</td>
+</tr>`).join('');
+toast(`Backtest complete — ${results.length} result(s)`, 'green');
 }
 
 // ─── Transcript upload ─────────────────────
 async function uploadTranscript(file) {
-  if (!file) return;
-  const prog = document.getElementById('upload-progress');
-  prog.textContent = 'Uploading…';
-  const fd = new FormData();
-  fd.append('file', file);
-  const r = await fetch(`${API}/api/upload-transcript`, {method:'POST', body: fd});
-  const d = await r.json();
-  prog.textContent = d.ok ? `✓ Uploaded: ${d.filename}` : `✗ Error: ${d.error}`;
-  loadTranscripts();
+if (!file) return;
+const prog = document.getElementById('upload-progress');
+prog.textContent = 'Uploading…';
+const fd = new FormData();
+fd.append('file', file);
+const r = await fetch(`${API}/api/upload-transcript`, {method:'POST', body: fd});
+const d = await r.json();
+prog.textContent = d.ok ? `✓ Uploaded: ${d.filename}` : `✗ Error: ${d.error}`;
+loadTranscripts();
 }
 
 async function loadTranscripts() {
-  const r = await fetch(`${API}/api/transcripts`);
-  const files = await r.json();
-  const tb = document.querySelector('#transcript-table tbody');
-  tb.innerHTML = files.map(f => `<tr>
-    <td>${f.name}</td><td>${(f.size/1024).toFixed(1)} KB</td>
-    <td>${new Date(f.date).toLocaleString()}</td>
-    <td><button class="ghost" style="padding:4px 10px;font-size:.75rem;"
-      onclick="alert('Preview not yet available — integrate with AI later.')">📄 View</button></td>
-  </tr>`).join('');
+const r = await fetch(`${API}/api/transcripts`);
+const files = await r.json();
+const tb = document.querySelector('#transcript-table tbody');
+tb.innerHTML = files.map(f => `<tr>
+<td>${f.name}</td><td>${(f.size/1024).toFixed(1)} KB</td>
+<td>${new Date(f.date).toLocaleString()}</td>
+<td><button class="ghost" style="padding:4px 10px;font-size:.75rem;" onclick="alert('Preview not yet available — integrate with AI later.')">📄 View</button></td>
+</tr>`).join('');
 }
 
 // ─── Settings / Risk config ────────────────
 async function loadSettings() {
-  const r = await fetch(`${API}/api/risk-config`);
-  const cfg = await r.json();
-  const grid = document.getElementById('risk-config-grid');
-  const labels = {
-    per_trade_risk_pct: 'Per-Trade Risk (%)',
-    max_open_trades: 'Max Open Trades',
-    max_open_per_strategy: 'Max Open / Strategy',
-    max_open_per_asset_class: 'Max Open / Asset Class',
-    daily_drawdown_pct: 'Daily Drawdown (%)',
-    max_trades_per_day: 'Max Trades / Day',
-    max_weekly_loss_pct: 'Weekly Loss Limit (%)',
-    min_risk_reward: 'Min Risk:Reward',
-  };
-  grid.innerHTML = Object.entries(cfg).map(([k,v]) => `<div class="config-item">
-    <label>${labels[k]||k}</label>
-    <input type="${typeof v==='number'?'number':'text'}" data-key="${k}" value="${v}" step="0.1">
-  </div>`).join('');
+const r = await fetch(`${API}/api/risk-config`);
+const cfg = await r.json();
+const grid = document.getElementById('risk-config-grid');
+const labels = {
+per_trade_risk_pct: 'Per-Trade Risk (%)',
+max_open_trades: 'Max Open Trades',
+max_open_per_strategy: 'Max Open / Strategy',
+max_open_per_asset_class: 'Max Open / Asset Class',
+daily_drawdown_pct: 'Daily Drawdown (%)',
+max_trades_per_day: 'Max Trades / Day',
+max_weekly_loss_pct: 'Weekly Loss Limit (%)',
+min_risk_reward: 'Min Risk:Reward',
+};
+grid.innerHTML = Object.entries(cfg).map(([k,v]) =>
+`<div class="config-item"><label>${labels[k]||k}</label>
+<input type="${typeof v==='number'?'number':'text'}" data-key="${k}" value="${v}" step="0.1">
+</div>`).join('');
 }
 
 async function saveRiskConfig() {
-  const inputs = document.querySelectorAll('#risk-config-grid input');
-  const payload = {};
-  inputs.forEach(el => payload[el.dataset.key] = +el.value);
-  const r = await fetch(`${API}/api/risk-config`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(payload)
-  });
-  const d = await r.json();
-  if (d.ok) toast('Risk config saved ✓', 'green'); else toast(d.error, 'red');
+const inputs = document.querySelectorAll('#risk-config-grid input');
+const payload = {};
+inputs.forEach(el => payload[el.dataset.key] = +el.value);
+const r = await fetch(`${API}/api/risk-config`, {
+method: 'POST',
+headers: {'Content-Type':'application/json'},
+body: JSON.stringify(payload)
+});
+const d = await r.json();
+if (d.ok) toast('Risk config saved ✓', 'green'); else toast(d.error, 'red');
 }
 
 async function saveScheduler() {
-  const mode = document.getElementById('cfg-mode').value;
-  const interval = +document.getElementById('cfg-interval').value;
-  const r = await fetch(`${API}/api/risk-config`, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({session_mode: mode, poll_interval: interval})
-  });
-  const d = await r.json();
-  if (d.ok) toast('Scheduler saved ✓','green'); else toast(d.error,'red');
+const mode = document.getElementById('cfg-mode').value;
+const interval = +document.getElementById('cfg-interval').value;
+const r = await fetch(`${API}/api/risk-config`, {
+method: 'POST',
+headers: {'Content-Type':'application/json'},
+body: JSON.stringify({session_mode: mode, poll_interval: interval})
+});
+const d = await r.json();
+if (d.ok) toast('Scheduler saved ✓','green'); else toast(d.error,'red');
 }
 
 // ─── Toast ─────────────────────────────────
 function toast(msg, color='blue') {
-  const colors = {green:'#00d4aa', red:'#ff5a5a', orange:'#ffb74d', blue:'#5aa8ff'};
-  const el = document.createElement('div');
-  el.textContent = msg;
-  el.style.cssText = `position:fixed;bottom:24px;right:24px;
-    background:${colors[color]||colors.blue};color:#0f1117;
-    padding:10px 22px;border-radius:8px;font-weight:600;font-size:.88rem;
-    z-index:9999;opacity:0;transition:opacity .3s;`;
-  document.body.appendChild(el);
-  requestAnimationFrame(() => el.style.opacity = 1);
-  setTimeout(() => { el.style.opacity = 0; setTimeout(() => el.remove(), 400); }, 4000);
+const colors = {green:'#00d4aa', red:'#ff5a5a', orange:'#ffb74d', blue:'#5aa8ff'};
+const el = document.createElement('div');
+el.textContent = msg;
+el.style.cssText = `position:fixed;bottom:24px;right:24px;
+background:${colors[color]||colors.blue};color:#0f1117;
+padding:10px 22px;border-radius:8px;font-weight:600;font-size:.88rem;
+z-index:9999;opacity:0;transition:opacity .3s;`;
+document.body.appendChild(el);
+requestAnimationFrame(() => el.style.opacity = 1);
+setTimeout(() => { el.style.opacity = 0; setTimeout(() => el.remove(), 400); }, 4000);
 }
 
 // ─── Init ──────────────────────────────────
 function fmt(v) { return v === '' || v == null ? '—' : (+v).toFixed(2); }
-loadTrades(); loadStats(); loadEquity();
+loadTrades(); loadStats(); loadEquity(); updateBtHint();
 refreshStatus();
-// Auto-refresh live data every 15s
-setInterval(() => { refreshStatus(); loadEquity(); }, 15000);
+// Auto-refresh every 15s
+setInterval(() => { refreshStatus(); loadEquity(); if (document.getElementById('tab-strategies').classList.contains('active')) loadStrategyPerf(); }, 15000);
 </script>
 </body>
 </html>

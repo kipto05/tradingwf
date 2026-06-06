@@ -2,18 +2,10 @@
 from __future__ import annotations
 
 import logging
-import time
 from dataclasses import dataclass
 from typing import Optional
 
 logger = logging.getLogger("mt5_adapter")
-
-# --- reconnect tuning constants ---
-_HARD_REINIT_RETRIES = 3
-_HARD_REINIT_COOLDOWN_S = 1.5
-_IPC_ERROR_CODES = frozenset({-10004, -10005})
-_LIVE_PROBE_SYMBOL = "EURUSD.m"
-_LIVE_PROBE_TIMEOUT = 2.0
 
 
 @dataclass
@@ -90,72 +82,25 @@ class MT5Adapter:
         self._connected = False
         logger.info("Disconnected from MT5")
 
-    # Alias so `engine.stop()` works transparently for both adapters.
-    shutdown = disconnect
-
-    # Alias so engine.stop() can call either name
-    shutdown = disconnect
-
     def _hard_reinit(self) -> bool:
-        """Drop and re-create the MT5 IPC connection with cooldown + retries."""
+        """Drop and re-create the MT5 IPC connection."""
         import metatrader5 as mt5
-
-        last_err = None
-        for attempt in range(_HARD_REINIT_RETRIES):
-            try:
-                mt5.shutdown()
-            except Exception:
-                pass
-
-            time.sleep(_HARD_REINIT_COOLDOWN_S)
-
-            if self.connect():
-                # Verify: a live OHLC probe is the only reliable health check
-                try:
-                    df = self.get_ohlc(_LIVE_PROBE_SYMBOL, mt5.TIMEFRAME_H1, 1)
-                    if not df.empty:
-                        logger.info("IPC reconnect verified (attempt %d)", attempt + 1)
-                        return True
-                except Exception as exc:
-                    logger.debug("Reconnect probe failed: %s", exc)
-
-            last_err = f"re-init attempt {attempt + 1}/{_HARD_REINIT_RETRIES} failed"
-            logger.warning(last_err)
-
-        logger.error("IPC re-init FAILED after %d attempts", _HARD_REINIT_RETRIES)
-        return False
+        try:
+            mt5.shutdown()
+        except Exception:
+            pass
+        return self.connect()
 
     def check_connection(self) -> bool:
-        """Stale-data + live-probe: the only reliable health check.
-
-        Instead of relying on the easily-stale mt5.last_error(), we always
-        do a live OHLC read of _LIVE_PROBE_SYMBOL after the error-code check.
-        If the probe returns empty data, we hard-re-init.
-        """
-        import metatrader5 as mt5
-
         if not self._connected:
             return self.connect()
-
-        # Fast-path error-code check
+        import metatrader5 as mt5
         err = mt5.last_error()
-        if err and err[0] in _IPC_ERROR_CODES:
+        if err and err[0] in (-10004, -10005):
             logger.warning("IPC broken (%s) — hard re-init", err)
             self._connected = False
             return self._hard_reinit()
-
-        # --- live data probe (the real health check) ---
-        try:
-            df = self.get_ohlc(_LIVE_PROBE_SYMBOL, mt5.TIMEFRAME_H1, 1)
-            if df.empty:
-                logger.warning("IPC probe: stale/empty data — hard re-init")
-                self._connected = False
-                return self._hard_reinit()
-            return True
-        except Exception as exc:
-            logger.warning("IPC probe failed: %s — hard re-init", exc)
-            self._connected = False
-            return self._hard_reinit()
+        return True
 
     # ---- market data ----
 
@@ -194,12 +139,8 @@ class MT5Adapter:
         df = pd.DataFrame(rates)
         df.rename(
             columns={
-                "time": "time",
-                "open": "open",
-                "high": "high",
-                "low": "low",
-                "close": "close",
-                "tick_volume": "volume",
+                "time": "time", "open": "open", "high": "high",
+                "low": "low", "close": "close", "tick_volume": "volume",
             },
             inplace=True,
         )
@@ -257,8 +198,8 @@ class MT5Adapter:
             "deviation": self.cfg.deviation,
             "comment": comment[:32],
             "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_RETURN,
         }
-        logger.info("[DBG] place_order req=%s", {k: v for k, v in req.items() if k != "price"})
         result = mt5.order_send(req)
         if result is None:
             raise MT5Error(f"Order send returned None: {mt5.last_error()}")
@@ -270,8 +211,7 @@ class MT5Adapter:
         )
         return {
             "order": result.order, "price": price,
-            "volume": lot, "retcode": result.retcode,
-            "comment": result.comment,
+            "volume": lot, "retcode": result.retcode, "comment": result.comment,
         }
 
     def close_position(self, ticket: int, lot=None):
@@ -305,8 +245,8 @@ class MT5Adapter:
             "price": price,
             "position": ticket,
             "type_time": mt5.ORDER_TIME_GTC,
+            "type_filling": mt5.ORDER_FILLING_RETURN,
         }
-        logger.info("[DBG] close_position ticket=%s req=%s", ticket, {k: v for k, v in req.items() if k != "price"})
         result = mt5.order_send(req)
         if result is None:
             raise MT5Error(f"Close order returned None: {mt5.last_error()}")

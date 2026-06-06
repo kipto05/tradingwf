@@ -364,6 +364,19 @@ async def api_strategies():
  except Exception as exc:
   return JSONResponse(content=[], status_code=500)
 
+@app.post("/api/strategies/{name}/toggle")
+async def api_toggle_strategy(name: str, payload: dict | None = None):
+    payload = payload or {}
+    enabled = payload.get("enabled", True)
+    try:
+        from strategies.registry import set_state
+        ok = set_state(name, bool(enabled))
+        if ok:
+            return JSONResponse(content={"ok": True, "name": name, "enabled": bool(enabled)})
+        return JSONResponse(content={"ok": False, "error": f"Strategy '{name}' not found"}, status_code=404)
+    except Exception as exc:
+        return JSONResponse(content={"ok": False, "error": str(exc)}, status_code=500)
+
 @app.get("/api/risk-config")
 async def api_get_risk():
  return JSONResponse(content=_risk_config())
@@ -421,10 +434,35 @@ async def api_trigger():
   return JSONResponse(content={"ok": False, "error": str(exc)}, status_code=500)
 
 # Backtest
+
+# Bars-per-month per timeframe (approx, for 24h trading days)
+_BARS_PER_MONTH = {
+    "M1":  43200,
+    "M5":   8640,
+    "M15":  2880,
+    "M30":  1440,
+    "H1":    720,
+    "H4":    180,
+    "D1":     22,
+}
+
+def _months_to_bars(months_back: int, timeframe: str) -> int:
+    """Convert calendar months to bar count for a given timeframe."""
+    ppm = _BARS_PER_MONTH.get(timeframe.upper(), 720)  # default H1
+    return max(500, months_back * ppm)
+
 @app.post("/api/backtest")
 async def api_backtest(payload: dict):
  strategy_name = payload.get("strategy", "")
- n_bars = int(payload.get("bars", 3000))
+ months_back = payload.get('months_back')
+ tf = payload.get('timeframe', '')
+ if months_back is not None:
+     try:
+         n_bars = _months_to_bars(int(months_back), tf)
+     except (ValueError, TypeError):
+         n_bars = 2000
+ else:
+     n_bars = int(payload.get('bars', 3000))
  try:
   from execution.backtester import run_backtest
   from execution.mt5_adapter import MT5Adapter, MT5Config
